@@ -276,7 +276,7 @@ function drawHexagons(){
   var speed = 0.05;
   var shrinkLoop = setInterval(function(){
     ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, s, s);
+    ctx.clearRect(0, 0, s, s);
     for(var i = 0; i < 91; i++){
       //ctx.rotate(30*Math.PI/180);
       ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
@@ -300,7 +300,7 @@ function flip(hex, nState){
     var speed = -0.1;
     var shrinkLoop = setInterval(function(){
       ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, s, s);
+      ctx.clearRect(0, 0, s, s);
       for(var i = 0; i < 91; i++){
         //ctx.rotate(30*Math.PI/180);
         if(i != hex) ctx.drawImage(hexImgs[hexagons[i][4]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
