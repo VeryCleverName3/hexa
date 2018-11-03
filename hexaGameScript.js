@@ -40,10 +40,11 @@ function  update(mX, mY){
       } else {
         flip(i, 1);
       }
+      console.log("This is hexagon " + i);
       do {
         changed = !changed;
         for(var i = 0; i < 91; i++){
-          if(hexagons[i][2] != 0){
+          if(hexagons[i][2] != 0 && hexagons[i][2] != 3){
             var bNear = 0;
             var rNear = 0;
             if(hexagons[i][2] == 1){
