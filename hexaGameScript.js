@@ -55,7 +55,7 @@ function  update(mX, mY){
       } else {
         flip(i, 1);
       }
-      console.log("This is hexagon " + i);
+      //console.log("This is hexagon " + i);
       do {
         changed = !changed;
         for(var i = 0; i < 91; i++){
@@ -118,7 +118,7 @@ function  update(mX, mY){
               }
             }
             //}
-            console.log(bNear + ", " + rNear + "(" + hexagons[i][1][0] + ", " + hexagons[i][1][1] + ")");
+            //console.log(bNear + ", " + rNear + "(" + hexagons[i][1][0] + ", " + hexagons[i][1][1] + ")");
             if(redTurn){
               if((rNear > bNear) && hexagons[i][2] != 2){
                 flip(i, 2);
