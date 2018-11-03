@@ -26,19 +26,20 @@ for(var i = 0; i < 91; i++){
 makeHexagons();
 //Input
 hexagons[60][2] = 3;
-hexagons[58][2] = 3;
-hexagons[36][2] = 3;
-hexagons[38][2] = 3;
-hexagons[40][2] = 3;
-hexagons[62][2] = 3;
-hexagons[78][2] = 3;
+hexagons[57][2] = 3;
+hexagons[24][2] = 3;
+hexagons[27][2] = 3;
+hexagons[30][2] = 3;
+hexagons[63][2] = 3;
+hexagons[84][2] = 3;
 hexagons[60][4] = 3;
-hexagons[58][4] = 3;
-hexagons[36][4] = 3;
-hexagons[38][4] = 3;
-hexagons[40][4] = 3;
-hexagons[62][4] = 3;
-hexagons[78][4] = 3;
+hexagons[57][4] = 3;
+hexagons[24][4] = 3;
+hexagons[27][4] = 3;
+hexagons[30][4] = 3;
+hexagons[63][4] = 3;
+hexagons[84][4] = 3;
+
 onmousedown = function(e){
   if(started) update(e.clientX - ((window.innerWidth-s) / 2), e.clientY);
   if(!started) start();
