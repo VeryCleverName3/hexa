@@ -131,17 +131,9 @@ function  update(mX, mY){
                 flip(i, 2);
                 changed = true;
               }
-              else if((bNear > rNear) && hexagons[i][2] != 1){
-                flip(i, 1);
-                changed = true;
-              }
             } else {
               if((bNear > rNear) && hexagons[i][2] != 1){
                 flip(i, 1);
-                changed = true;
-              }
-              else if((rNear > bNear) && hexagons[i][2] != 2){
-                flip(i, 2);
                 changed = true;
               }
             }
