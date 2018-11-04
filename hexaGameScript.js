@@ -44,6 +44,10 @@ onmousedown = function(e){
   if(started) update(e.clientX - ((window.innerWidth-s) / 2), e.clientY);
   if(!started) start();
 }
+ontouchdown = function(e){
+  if(started) update(e.touches[0].clientX - ((window.innerWidth-s) / 2), e.touches[0].clientY);
+  if(!started) start();
+}
 
 //Most stuff happens here
 function  update(mX, mY){
