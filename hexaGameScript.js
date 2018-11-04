@@ -307,7 +307,7 @@ function flip(hex, nState){
   if(flipping){
     setTimeout(function(){flip(hex, nState)}, 500);
   } else {
-    flipping = true;
+    if(!mobile) flipping = true;
     var shrinkSize = 1;
     var speed = -0.1;
     if(mobile){
