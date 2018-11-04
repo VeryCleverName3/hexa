@@ -312,7 +312,7 @@ function flip(hex, nState){
     var speed = -0.1;
     if(mobile){
       drawHexagons();
-      setTimeout(function(){flipping=false;}, 100);
+      flipping = false;
     } else {
       var shrinkLoop = setInterval(function(){
         ctx.fillStyle = "white";
