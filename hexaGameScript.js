@@ -14,7 +14,7 @@ var ctx = c.getContext("2d");
 ctx.lineWidth = 10;
 var logo = new Image;
 logo.src = "hexalogo.svg";
-ctx.drawImage(logo, 0, 0, s, s);
+setTimeout(function(){ctx.drawImage(logo, 0, 0, s, s);}, 100);
 var hexagons = [];
 var hexImgs = [new Image, new Image, new Image, new Image];
 hexImgs[0].src = "greyhex.svg";
