@@ -5,6 +5,7 @@ c.height = window.innerHeight;
 c.width = c.height;
 s = c.width;
 var hexSize = 3;
+var mobile = false;
 var redTurn = false;
 var changed = false;
 var started = false;
@@ -47,6 +48,7 @@ onmousedown = function(e){
 ontouchstart = function(e){
   if(started) update(e.touches[0].clientX - ((window.innerWidth-s) / 2), e.touches[0].clientY);
   if(!started) start();
+  mobile = true;
 }
 
 //Most stuff happens here
@@ -279,20 +281,25 @@ function makeHexagons(){
 function drawHexagons(){
   var shrinkSize = 0;
   var speed = 0.05;
-  var shrinkLoop = setInterval(function(){
-    ctx.fillStyle = "white";
-    ctx.clearRect(0, 0, s, s);
+  if(mobile){
     for(var i = 0; i < 91; i++){
-      //ctx.rotate(30*Math.PI/180);
-      ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
-      //ctx.rotate(-30*Math.PI/180);
+      ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
     }
-
-    shrinkSize += speed;
-    if(shrinkSize > 1.05){
-      clearInterval(shrinkLoop);
-    }
-  }, 1000/60);
+  } else {
+    var shrinkLoop = setInterval(function(){
+      ctx.fillStyle = "white";
+      ctx.clearRect(0, 0, s, s);
+      for(var i = 0; i < 91; i++){
+        //ctx.rotate(30*Math.PI/180);
+        ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
+        //ctx.rotate(-30*Math.PI/180);
+      }
+      shrinkSize += speed;
+      if(shrinkSize > 1.05){
+        clearInterval(shrinkLoop);
+      }
+    }, 1000/60);
+  }
 }
 
 function flip(hex, nState){
@@ -303,24 +310,30 @@ function flip(hex, nState){
     flipping = true;
     var shrinkSize = 1;
     var speed = -0.1;
-    var shrinkLoop = setInterval(function(){
-      ctx.fillStyle = "white";
-      ctx.clearRect(0, 0, s, s);
+    if(mobile){
       for(var i = 0; i < 91; i++){
-        //ctx.rotate(30*Math.PI/180);
-        if(i != hex) ctx.drawImage(hexImgs[hexagons[i][4]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
-        //ctx.rotate(-30*Math.PI/180);
+        ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
       }
-      ctx.drawImage(hexImgs[hexagons[hex][4]], hexagons[hex][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[hex][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
-      shrinkSize += speed;
-      if(shrinkSize < 0){
-        speed = 0.1;
-        hexagons[hex][4] = nState;
-      }
-      if(shrinkSize > 1){
-        flipping = false;
-        clearInterval(shrinkLoop);
-      }
-    }, 1000/60);
+    } else {
+      var shrinkLoop = setInterval(function(){
+        ctx.fillStyle = "white";
+        ctx.clearRect(0, 0, s, s);
+        for(var i = 0; i < 91; i++){
+          //ctx.rotate(30*Math.PI/180);
+          if(i != hex) ctx.drawImage(hexImgs[hexagons[i][4]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
+          //ctx.rotate(-30*Math.PI/180);
+        }
+        ctx.drawImage(hexImgs[hexagons[hex][4]], hexagons[hex][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[hex][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
+        shrinkSize += speed;
+        if(shrinkSize < 0){
+          speed = 0.1;
+          hexagons[hex][4] = nState;
+        }
+        if(shrinkSize > 1){
+          flipping = false;
+          clearInterval(shrinkLoop);
+        }
+      }, 1000/60);
+    }
   }
 }
