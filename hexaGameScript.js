@@ -4,6 +4,7 @@ var convNum = 1.73205080757;
 c.height = window.innerHeight;
 c.width = c.height;
 s = c.width;
+var body = document.getElementById("body");
 var hexSize = 3;
 var mobile = false;
 var redTurn = false;
@@ -130,7 +131,7 @@ function  update(mX, mY){
                 flip(i, 2);
                 changed = true;
               }
-              if((bNear > rNear) && hexagons[i][2] != 1){
+              else if((bNear > rNear) && hexagons[i][2] != 1){
                 flip(i, 1);
                 changed = true;
               }
@@ -139,7 +140,7 @@ function  update(mX, mY){
                 flip(i, 1);
                 changed = true;
               }
-              if((rNear > bNear) && hexagons[i][2] != 2){
+              else if((rNear > bNear) && hexagons[i][2] != 2){
                 flip(i, 2);
                 changed = true;
               }
@@ -148,6 +149,9 @@ function  update(mX, mY){
         }
       } while (changed);
       redTurn = !redTurn;
+      if(redTurn){
+        body.style.backgroundColor = "crimson";
+      } else body.style.backgroundColor = "mediumblue";
     }
   }
 }
@@ -162,6 +166,7 @@ function start(){
     if(logoY < -s){
       drawHexagons();
       started = true;
+      body.style.backgroundColor = "mediumblue";
       clearInterval(startingSequence);
     }
   }, 1000/60);
