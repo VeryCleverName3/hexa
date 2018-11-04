@@ -153,7 +153,6 @@ function  update(mX, mY){
 }
 
 function start(){
-  started = true;
   var logoY = 0;
   var startingSequence = setInterval(function(){
     logoY -= s/100;
@@ -162,6 +161,7 @@ function start(){
     ctx.drawImage(logo, 0, logoY, s, s);
     if(logoY < -s){
       drawHexagons();
+      started = true;
       clearInterval(startingSequence);
     }
   }, 1000/60);
@@ -311,9 +311,7 @@ function flip(hex, nState){
     var shrinkSize = 1;
     var speed = -0.1;
     if(mobile){
-      for(var i = 0; i < 91; i++){
-        ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
-      }
+      drawHexagons();
     } else {
       var shrinkLoop = setInterval(function(){
         ctx.fillStyle = "white";
