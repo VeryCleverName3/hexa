@@ -301,6 +301,7 @@ function drawHexagons(){
 }
 
 function flip(hex, nState){
+  console.log(redTurn);
   hexagons[hex][2] = nState;
   if(flipping){
     setTimeout(function(){flip(hex, nState)}, 500);
