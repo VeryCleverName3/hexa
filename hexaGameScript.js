@@ -1,6 +1,5 @@
 // Variables & stuff
 var c = document.getElementById("mainCanvas");
-screen.orientation.lock("landscape-primary");
 var convNum = 1.73205080757;
 c.height = window.innerHeight;
 c.width = c.height;
