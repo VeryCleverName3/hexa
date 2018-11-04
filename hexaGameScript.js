@@ -287,6 +287,7 @@ function drawHexagons(){
   var shrinkSize = 0;
   var speed = 0.05;
   if(mobile){
+    ctx.clearRect(0, 0, s, s);
     for(var i = 0; i < 91; i++){
       ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
     }
