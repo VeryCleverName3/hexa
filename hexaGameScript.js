@@ -43,7 +43,7 @@ hexagons[63][4] = 3;
 hexagons[84][4] = 3;
 
 onmousedown = function(e){
-  if(started) update(e.clientX - ((window.innerWidth-s) / 2), e.clientY);
+  if(started && !flipping) update(e.clientX - ((window.innerWidth-s) / 2), e.clientY);
   if(!started) start();
 }
 ontouchstart = function(e){
