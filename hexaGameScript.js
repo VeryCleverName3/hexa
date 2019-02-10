@@ -87,74 +87,6 @@ function  update(mX, mY){
                 near[hexagons[hexagons[i][3][j]][2]] += 1;
               }
             }
-            /*if(hexagons[i][2] == 1){
-              bNear += 1;
-            }
-            if(hexagons[i][2] == 2){
-              rNear += 1;
-            }
-            //for(var j = 0; j < 6; j++){
-            if(hexagons[i][3][0] != -1){
-              if(hexagons[hexagons[i][3][0]][2] == 1){
-                bNear += 1;
-              }
-              if(hexagons[hexagons[i][3][0]][2] == 2){
-                rNear += 1;
-              }
-            }
-            if(hexagons[i][3][1] != -1){
-              if(hexagons[hexagons[i][3][1]][2] == 1){
-                bNear += 1;
-              }
-              if(hexagons[hexagons[i][3][1]][2] == 2){
-                rNear += 1;
-              }
-            }
-            if(hexagons[i][3][2] != -1){
-              if(hexagons[hexagons[i][3][2]][2] == 1){
-                bNear += 1;
-              }
-              if(hexagons[hexagons[i][3][2]][2] == 2){
-                rNear += 1;
-              }
-            }
-            if(hexagons[i][3][3] != -1){
-              if(hexagons[hexagons[i][3][3]][2] == 1){
-                bNear += 1;
-              }
-              if(hexagons[hexagons[i][3][3]][2] == 2){
-                rNear += 1;
-              }
-            }
-            if(hexagons[i][3][4] != -1){
-              if(hexagons[hexagons[i][3][4]][2] == 1){
-                bNear += 1;
-              }
-              if(hexagons[hexagons[i][3][4]][2] == 2){
-                rNear += 1;
-              }
-            }
-            if(hexagons[i][3][5] != -1){
-              if(hexagons[hexagons[i][3][5]][2] == 1){
-                bNear += 1;
-              }
-              if(hexagons[hexagons[i][3][5]][2] == 2){
-                rNear += 1;
-              }
-            }*/
-            //}
-            //console.log(bNear + ", " + rNear + "(" + hexagons[i][1][0] + ", " + hexagons[i][1][1] + ")");
-            /*if(turn == 1){
-              if((near[2] > near[1]) && hexagons[i][2] != 2){
-                flip(i, 2);
-                changed = true;
-              }
-            } else {
-              if((near[1] > near[2]) && hexagons[i][2] != 1){
-                flip(i, 1);
-                changed = true;
-              }
-            }*/
             var order;
             switch(turn){
               case 0:
@@ -171,10 +103,8 @@ function  update(mX, mY){
                 break;
             }
             for(var k = 0; k < 4; k++){
-              console.log("k: " + k);
               if(near[order[k]] > near[hexagons[i][2]]){
                 flip(i, order[k]);
-                console.log("Place 1, " + order);
                 changed = true;
               }
             }
@@ -240,9 +170,6 @@ function makeHexagons(){
     hexagons[i][0][0] = (hexagons[i][0][1]) / 1.9;
     hexagons[i][0][0] = Math.abs(hexagons[i][0][0]);
     hexagons[i][0][0] += hexagons[i][1][0];
-    //if(hexagons[i][1][1] % 2 == 0){
-      //hexagons[i][0][1] += 0.75;
-    //}
     hexagons[i][0][1] += 5;
     hexagons[i][0][0] *= s/13;
     hexagons[i][0][1] *= s/14;
