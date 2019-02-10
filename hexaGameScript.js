@@ -156,22 +156,26 @@ function  update(mX, mY){
               }
             }*/
             for(var k = 0; k < 6; k++){
-              if(turn == 0 && hexagons[i][2] != 1 && near[k] > near[hexagons[i][2]]){
-                flip(i, 1);
+              if(near[k] > near[hexagons[i][2]]){
+                flip(i, near[hexagons[i][2]]);
+                changed = true;
+              }
+              /*if(turn == 0 && hexagons[i][2] != 1 && near[k] > near[hexagons[i][2]]){
+                flip(i, near[hexagons[i][2]]);
                 changed = true;
               }
               if(turn == 1 && hexagons[i][2] != 2 && near[k] > near[hexagons[i][2]]){
-                flip(i, 2);
+                flip(i, near[hexagons[i][2]]);
                 changed = true;
               }
               if(turn == 2 && hexagons[i][2] != 4 && near[k] > near[hexagons[i][2]]){
-                flip(i, 4);
+                flip(i, near[hexagons[i][2]]);
                 changed = true;
               }
               if(turn == 3 && hexagons[i][2] != 5 && near[k] > near[hexagons[i][2]]){
-                flip(i, 5);
+                flip(i, near[hexagons[i][2]]);
                 changed = true;
-              }
+              }*/
             }
           }
         }
