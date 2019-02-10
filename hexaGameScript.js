@@ -155,27 +155,28 @@ function  update(mX, mY){
                 changed = true;
               }
             }*/
-            for(var k = 0; k < 6; k++){
-              if(near[k] > near[hexagons[i][2]]){
-                flip(i, near[hexagons[i][2]]);
+            var order;
+            switch(turn){
+              case 0:
+                order = [1, 5, 4, 2];
+                break;
+              case 1:
+                order = [2, 1, 5, 4];
+                break;
+              case 2:
+                order = [4, 2, 1, 5];
+                break;
+              case 3:
+                order = [5, 4, 2, 1];
+                break;
+            }
+            for(var k = 0; k < 4; k++){
+              console.log("k: " + k);
+              if(near[order[k]] > near[hexagons[i][2]]){
+                flip(i, order[k]);
+                console.log("Place 1, " + order);
                 changed = true;
               }
-              /*if(turn == 0 && hexagons[i][2] != 1 && near[k] > near[hexagons[i][2]]){
-                flip(i, near[hexagons[i][2]]);
-                changed = true;
-              }
-              if(turn == 1 && hexagons[i][2] != 2 && near[k] > near[hexagons[i][2]]){
-                flip(i, near[hexagons[i][2]]);
-                changed = true;
-              }
-              if(turn == 2 && hexagons[i][2] != 4 && near[k] > near[hexagons[i][2]]){
-                flip(i, near[hexagons[i][2]]);
-                changed = true;
-              }
-              if(turn == 3 && hexagons[i][2] != 5 && near[k] > near[hexagons[i][2]]){
-                flip(i, near[hexagons[i][2]]);
-                changed = true;
-              }*/
             }
           }
         }
@@ -338,7 +339,6 @@ function drawHexagons(){
 }
 
 function flip(hex, nState){
-  console.log(turn);
   hexagons[hex][2] = nState;
   if(flipping){
     setTimeout(function(){flip(hex, nState)}, 500);
