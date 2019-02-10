@@ -7,7 +7,8 @@ s = c.width;
 var body = document.getElementById("body");
 var hexSize = 3;
 var mobile = false;
-var redTurn = false;
+var turn = 0;
+var players = 2;
 var changed = false;
 var started = false;
 var flipping = false;
@@ -17,11 +18,13 @@ var logo = new Image;
 logo.src = "hexalogo.svg";
 setTimeout(function(){ctx.drawImage(logo, 0, 0, s, s);}, 100);
 var hexagons = [];
-var hexImgs = [new Image, new Image, new Image, new Image];
+var hexImgs = [new Image, new Image, new Image, new Image, new Image, new Image];
 hexImgs[0].src = "greyhex.svg";
 hexImgs[1].src = "bluehex.svg";
 hexImgs[2].src = "redhex.svg";
 hexImgs[3].src = "darkgreyhex.svg";
+hexImgs[4].src = "yellowhex.png";
+hexImgs[5].src = "greenhex.png";
 for(var i = 0; i < 91; i++){
   hexagons[i] = [[0, 0], [0, 0], 0, [-1, -1, -1, -1, -1, -1], 0];
 }
@@ -57,19 +60,34 @@ function  update(mX, mY){
   console.log("(" + mX + ", " + mY + ")");
   for(var i = 0; i < 91; i++){
     if((mX >= hexagons[i][0][0] - (s/26) && mX <= hexagons[i][0][0] + (s/26) && mY >= hexagons[i][0][1] - (s/26) && mY <= hexagons[i][0][1] + (s/26)) && hexagons[i][2] == 0){
-      if(redTurn){
-        flip(i, 2);
-      } else {
-        flip(i, 1);
+      switch(turn){
+        case 0:
+          flip(i, 1);
+          break;
+        case 1:
+          flip(i, 2);
+          break;
+        case 2:
+          flip(i, 4);
+          break;
+        case 3:
+          flip(i, 5);
+          break;
       }
       //console.log("This is hexagon " + i);
       do {
         changed = !changed;
         for(var i = 0; i < 91; i++){
           if(hexagons[i][2] != 0 && hexagons[i][2] != 3){
-            var bNear = 0;
-            var rNear = 0;
-            if(hexagons[i][2] == 1){
+            var near = [-1, 0, 0, -1, 0, 0];
+            near[hexagons[i][2]]++;
+            for(var j = 0; j < 6; j++){
+              if(hexagons[i][3][j] != -1){
+                if(hexagons[hexagons[i][3][j]][2] != 0 && hexagons[hexagons[i][3][j]][2] != 3)
+                near[hexagons[hexagons[i][3][j]][2]] += 1;
+              }
+            }
+            /*if(hexagons[i][2] == 1){
               bNear += 1;
             }
             if(hexagons[i][2] == 2){
@@ -123,27 +141,43 @@ function  update(mX, mY){
               if(hexagons[hexagons[i][3][5]][2] == 2){
                 rNear += 1;
               }
-            }
+            }*/
             //}
             //console.log(bNear + ", " + rNear + "(" + hexagons[i][1][0] + ", " + hexagons[i][1][1] + ")");
-            if(redTurn){
-              if((rNear > bNear) && hexagons[i][2] != 2){
+            /*if(turn == 1){
+              if((near[2] > near[1]) && hexagons[i][2] != 2){
                 flip(i, 2);
                 changed = true;
               }
             } else {
-              if((bNear > rNear) && hexagons[i][2] != 1){
+              if((near[1] > near[2]) && hexagons[i][2] != 1){
                 flip(i, 1);
+                changed = true;
+              }
+            }*/
+            for(var k = 0; k < 6; k++){
+              if(turn == 0 && hexagons[i][2] != 1 && near[k] > near[hexagons[i][2]]){
+                flip(i, 1);
+                changed = true;
+              }
+              if(turn == 1 && hexagons[i][2] != 2 && near[k] > near[hexagons[i][2]]){
+                flip(i, 2);
+                changed = true;
+              }
+              if(turn == 2 && hexagons[i][2] != 4 && near[k] > near[hexagons[i][2]]){
+                flip(i, 4);
+                changed = true;
+              }
+              if(turn == 3 && hexagons[i][2] != 5 && near[k] > near[hexagons[i][2]]){
+                flip(i, 5);
                 changed = true;
               }
             }
           }
         }
       } while (changed);
-      redTurn = !redTurn;
-      if(redTurn){
-        body.style.backgroundColor = "crimson";
-      } else body.style.backgroundColor = "mediumblue";
+      turn++;
+      if(turn >= players) turn = 0;
     }
   }
 }
@@ -158,7 +192,6 @@ function start(){
     if(logoY < -s){
       drawHexagons();
       started = true;
-      body.style.backgroundColor = "mediumblue";
       clearInterval(startingSequence);
     }
   }, 1000/60);
@@ -301,7 +334,7 @@ function drawHexagons(){
 }
 
 function flip(hex, nState){
-  console.log(redTurn);
+  console.log(turn);
   hexagons[hex][2] = nState;
   if(flipping){
     setTimeout(function(){flip(hex, nState)}, 500);
