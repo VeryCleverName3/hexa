@@ -72,7 +72,12 @@ onmousedown = function(e){
 }
 ontouchstart = function(e){
   if(started) update(e.touches[0].clientX - ((window.innerWidth-s) / 2), e.touches[0].clientY);
-  if(!started) start();
+  if(!started) {
+    start();
+    if(e.touches[0].clientX - ((window.innerWidth-s) / 2) <= s * (1/3)) players = 2;
+    else if(e.touches[0].clientX - ((window.innerWidth-s) / 2) <= s * (2/3)) players = 3;
+    else players = 4;
+  }
   mobile = true;
 }
 
