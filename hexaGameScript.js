@@ -26,6 +26,7 @@ hexImgs[2].src = "redhex.svg";
 hexImgs[3].src = "darkgreyhex.svg";
 hexImgs[4].src = "yellowhex.png";
 hexImgs[5].src = "greenhex.png";
+var colorLoop;
 for(var i = 0; i < 91; i++){
   hexagons[i] = [[0, 0], [0, 0], 0, [-1, -1, -1, -1, -1, -1], 0];
 }
@@ -317,7 +318,8 @@ function flip(hex, nState){
   }
 }
 function bgColorFadeTo(r, g, b){
-  var colorLoop = setInterval(function(){
+  clearInterval(colorLoop);
+  colorLoop = setInterval(function(){
     if(bgColors[0] > r){
       bgColors[0]--;
     }
