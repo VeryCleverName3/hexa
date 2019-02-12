@@ -10,6 +10,7 @@ var mobile = false;
 var turn = 0;
 var players = 2;
 var changed = false;
+var bgColors = [0, 0, 0];
 var started = false;
 var flipping = false;
 var ctx = c.getContext("2d");
@@ -113,6 +114,20 @@ function  update(mX, mY){
       } while (changed);
       turn++;
       if(turn >= players) turn = 0;
+      switch(turn){
+        case 0:
+          bgColorFadeTo(0, 0, 255);
+          break;
+        case 1:
+          bgColorFadeTo(255, 0, 0);
+          break;
+        case 2:
+          bgColorFadeTo(255, 230, 0);
+          break;
+        case 3:
+          bgColorFadeTo(0, 255, 0);
+          break;
+      }
     }
   }
 }
@@ -122,11 +137,13 @@ function start(){
   var startingSequence = setInterval(function(){
     logoY -= s/100;
     ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, s, s);
+    ctx.clearRect(0, 0, s, s);
     ctx.drawImage(logo, 0, logoY, s, s);
     if(logoY < -s){
       drawHexagons();
       started = true;
+      body.style.backgroundColor = "rgba(0, 0, 255, 0.3)";
+      bgColors = [0, 0, 255];
       clearInterval(startingSequence);
     }
   }, 1000/60);
@@ -298,4 +315,30 @@ function flip(hex, nState){
       }, 1000/60);
     }
   }
+}
+function bgColorFadeTo(r, g, b){
+  var colorLoop = setInterval(function(){
+    if(bgColors[0] > r){
+      bgColors[0]--;
+    }
+    if(bgColors[0] < r){
+      bgColors[0]++;
+    }
+    if(bgColors[1] > g){
+      bgColors[1]--;
+    }
+    if(bgColors[1] < g){
+      bgColors[1]++;
+    }
+    if(bgColors[2] > b){
+      bgColors[2]--;
+    }
+    if(bgColors[2] < b){
+      bgColors[2]++;
+    }
+    body.style.backgroundColor = "rgba(" + bgColors[0] + ", " + bgColors[1] + ", " + bgColors[2] + ", 0.3)";
+    if(bgColors[0] == r && bgColors[1] == g && bgColors[2] == b){
+      clearInterval(colorLoop);
+    }
+  }, 1);
 }
