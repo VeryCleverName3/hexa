@@ -17,7 +17,21 @@ var ctx = c.getContext("2d");
 ctx.lineWidth = 10;
 var logo = new Image;
 logo.src = "hexalogo.svg";
-setTimeout(function(){ctx.drawImage(logo, 0, 0, s, s);}, 100);
+setTimeout(function(){
+  ctx.drawImage(logo, 0, 0, s, s);
+  //2 player option
+  ctx.drawImage(hexImgs[1], 0, s * (3/4), hexSize*s/13, hexSize*s/13);
+  ctx.drawImage(hexImgs[2], (hexSize*s/13/3), s * (3/4), hexSize*s/13, hexSize*s/13);
+  //3 player option
+  ctx.drawImage(hexImgs[1], s * (2.8/8), s * (3/4), hexSize*s/13, hexSize*s/13);
+  ctx.drawImage(hexImgs[2], s * (2.8/8) + (hexSize*s/13/3), s * (3/4), hexSize*s/13, hexSize*s/13);
+  ctx.drawImage(hexImgs[4], s * (3.1/8), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
+  //4 player option
+  ctx.drawImage(hexImgs[1], s * (5.8/8), s * (3/4), hexSize*s/13, hexSize*s/13);
+  ctx.drawImage(hexImgs[2], s * (5.8/8) + (hexSize*s/13/3), s * (3/4), hexSize*s/13, hexSize*s/13);
+  ctx.drawImage(hexImgs[4], s * (6.1/8), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
+  ctx.drawImage(hexImgs[5], s * (6.1/8) - (hexSize*s/13/3), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
+}, 100);
 var hexagons = [];
 var hexImgs = [new Image, new Image, new Image, new Image, new Image, new Image];
 hexImgs[0].src = "greyhex.svg";
@@ -49,7 +63,12 @@ hexagons[84][4] = 3;
 
 onmousedown = function(e){
   if(started && !flipping) update(e.clientX - ((window.innerWidth-s) / 2), e.clientY);
-  if(!started) start();
+  if(!started){
+    start();
+    if(e.clientX - ((window.innerWidth-s) / 2) <= s * (1/3)) players = 2;
+    else if(e.clientX - ((window.innerWidth-s) / 2) <= s * (2/3)) players = 3;
+    else players = 4;
+  }
 }
 ontouchstart = function(e){
   if(started) update(e.touches[0].clientX - ((window.innerWidth-s) / 2), e.touches[0].clientY);
@@ -135,11 +154,25 @@ function  update(mX, mY){
 
 function start(){
   var logoY = 0;
+  var choicesY = 0;
   var startingSequence = setInterval(function(){
     logoY -= s/100;
+    choicesY += s/100;
     ctx.fillStyle = "white";
     ctx.clearRect(0, 0, s, s);
     ctx.drawImage(logo, 0, logoY, s, s);
+
+    ctx.drawImage(hexImgs[1], 0, s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
+    ctx.drawImage(hexImgs[2], (hexSize*s/13/3), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
+    //3 player option
+    ctx.drawImage(hexImgs[1], s * (2.8/8), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
+    ctx.drawImage(hexImgs[2], s * (2.8/8) + (hexSize*s/13/3), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
+    ctx.drawImage(hexImgs[4], s * (3.1/8), s * (3/4) - (hexSize*s/13/3.4) + choicesY, hexSize*s/13, hexSize*s/13);
+    //4 player option
+    ctx.drawImage(hexImgs[1], s * (5.8/8), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
+    ctx.drawImage(hexImgs[2], s * (5.8/8) + (hexSize*s/13/3), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
+    ctx.drawImage(hexImgs[4], s * (6.1/8), s * (3/4) - (hexSize*s/13/3.4) + choicesY, hexSize*s/13, hexSize*s/13);
+    ctx.drawImage(hexImgs[5], s * (6.1/8) - (hexSize*s/13/3), s * (3/4) - (hexSize*s/13/3.4) + choicesY, hexSize*s/13, hexSize*s/13);
     if(logoY < -s){
       drawHexagons();
       started = true;
