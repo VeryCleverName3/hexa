@@ -147,7 +147,7 @@ function  update(mX, mY){
           bgColorFadeTo(255, 0, 0);
           break;
         case 2:
-          bgColorFadeTo(255, 230, 0);
+          bgColorFadeTo(255, 200, 0);
           break;
         case 3:
           bgColorFadeTo(0, 255, 0);
