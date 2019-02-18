@@ -1,7 +1,7 @@
 // Variables & stuff
 var c = document.getElementById("mainCanvas");
 var convNum = 1.73205080757;
-c.height = window.innerHeight;
+c.height = window.innerHeight * 4;
 c.width = c.height;
 s = c.width;
 var body = document.getElementById("body");
@@ -20,6 +20,8 @@ var playButton = new Image;
 playButton.src = "Assets/PlayButton.svg";
 logo.src = "hexalogo.svg";
 var numbers = [0, 0, new Image, new Image, new Image, new Image, new Image];
+var oldMoves = [];
+var turnNumber = 0;
 var upArrow = new Image;
 var downArrow = new Image;
 upArrow.src = "Assets/UpArrow.svg";
@@ -83,12 +85,12 @@ hexagons[30][4] = 3;
 hexagons[63][4] = 3;
 hexagons[84][4] = 3;
 
-onmousedown = function(e){
+document.getElementById("mainCanvas").onmousedown = function(e){
+  var x = (e.clientX * 4) - (((3 * s / 13) / 2) * (190 / 320));
+  var y = e.clientY * 4;
   if(e.which == 1){
-    if(started && !flipping) update(e.clientX - ((window.innerWidth-s) / 2), e.clientY);
+    if(started && !flipping) update(x, y);
     if(!started){
-      var x = e.clientX - ((window.innerWidth-s) / 2);
-      var y = e.clientY;
       if(Math.hypot(y - s * (3/4), x -  s * (1/4)) < s / 12) start();
       if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
         players++;
@@ -140,6 +142,8 @@ function  update(mX, mY){
   console.log("(" + mX + ", " + mY + ")");
   for(var i = 0; i < 91; i++){
     if((mX >= hexagons[i][0][0] - (s/26) && mX <= hexagons[i][0][0] + (s/26) && mY >= hexagons[i][0][1] - (s/26) && mY <= hexagons[i][0][1] + (s/26)) && hexagons[i][2] == 0){
+      oldMoves[turnNumber] = hexagons.slice();
+      turnNumber++;
       switch(turn){
         case 0:
           flip(i, 1);
