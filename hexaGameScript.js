@@ -29,31 +29,11 @@ downArrow.src = "Assets/DownArrow.svg";
 for(var i = 2; i < numbers.length; i++){
   numbers[i].src = "Assets/" + i + ".svg";
 }
-function drawMenu(){
-  ctx.drawImage(logo, 0, -s * (1/6), s, s);
-  ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);
-  ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
-  ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
-  ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
-  /*//2 player option
-  ctx.drawImage(hexImgs[1], 0, s * (3/4), hexSize*s/13, hexSize*s/13);
-  ctx.drawImage(hexImgs[2], (hexSize*s/13/3), s * (3/4), hexSize*s/13, hexSize*s/13);
-  //3 player option
-  ctx.drawImage(hexImgs[1], s * (2.8/8), s * (3/4), hexSize*s/13, hexSize*s/13);
-  ctx.drawImage(hexImgs[2], s * (2.8/8) + (hexSize*s/13/3), s * (3/4), hexSize*s/13, hexSize*s/13);
-  ctx.drawImage(hexImgs[4], s * (3.1/8), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
-  //4 player option
-  ctx.drawImage(hexImgs[1], s * (5.8/8), s * (3/4), hexSize*s/13, hexSize*s/13);
-  ctx.drawImage(hexImgs[2], s * (5.8/8) + (hexSize*s/13/3), s * (3/4), hexSize*s/13, hexSize*s/13);
-  ctx.drawImage(hexImgs[4], s * (6.1/8), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
-  ctx.drawImage(hexImgs[5], s * (6.1/8) - (hexSize*s/13/3), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
-  */
-}
-logo.onload = drawMenu;
-playButton.onload = drawMenu;
-downArrow.onload = drawMenu;
-upArrow.onload = drawMenu;
-numbers[2].onload = drawMenu;
+logo.onload = function(){ctx.drawImage(logo, 0, -s * (1/6), s, s);};
+playButton.onload = function(){ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);};
+downArrow.onload = function(){ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);};
+upArrow.onload = function(){ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);};
+numbers[2].onload = function(){ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);};
 var hexagons = [];
 var hexImgs = [new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image];
 hexImgs[0].src = "greyhex.svg";
