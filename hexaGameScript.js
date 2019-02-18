@@ -19,7 +19,15 @@ var logo = new Image;
 var playButton = new Image;
 playButton.src = "Assets/PlayButton.svg";
 logo.src = "hexalogo.svg";
-setTimeout(function(){
+var numbers = [0, 0, new Image, new Image, new Image, new Image, new Image];
+var upArrow = new Image;
+var downArrow = new Image;
+upArrow.src = "Assets/UpArrow.svg";
+downArrow.src = "Assets/DownArrow.svg";
+for(var i = 2; i < numbers.length; i++){
+  numbers[i].src = "Assets/" + i + ".svg";
+}
+function drawMenu(){
   ctx.drawImage(logo, 0, -s * (1/6), s, s);
   ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);
   ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
@@ -38,7 +46,12 @@ setTimeout(function(){
   ctx.drawImage(hexImgs[4], s * (6.1/8), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
   ctx.drawImage(hexImgs[5], s * (6.1/8) - (hexSize*s/13/3), s * (3/4) - (hexSize*s/13/3.4), hexSize*s/13, hexSize*s/13);
   */
-}, 100);
+}
+logo.onload = drawMenu;
+playButton.onload = drawMenu;
+downArrow.onload = drawMenu;
+upArrow.onload = drawMenu;
+numbers[2].onload = drawMenu;
 var hexagons = [];
 var hexImgs = [new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image];
 hexImgs[0].src = "greyhex.svg";
@@ -50,14 +63,6 @@ hexImgs[5].src = "Assets/GreenHex.svg";
 hexImgs[6].src = "Assets/PurpleHex.svg";
 hexImgs[7].src = "Assets/LightBlueHex.svg";
 var colorLoop;
-var numbers = [0, 0, new Image, new Image, new Image, new Image, new Image];
-var upArrow = new Image;
-var downArrow = new Image;
-upArrow.src = "Assets/UpArrow.svg";
-downArrow.src = "Assets/DownArrow.svg";
-for(var i = 2; i < numbers.length; i++){
-  numbers[i].src = "Assets/" + i + ".svg";
-}
 for(var i = 0; i < 91; i++){
   hexagons[i] = [[0, 0], [0, 0], 0, [-1, -1, -1, -1, -1, -1], 0];
 }
