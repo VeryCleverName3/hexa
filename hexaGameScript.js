@@ -86,7 +86,8 @@ hexagons[63][4] = 3;
 hexagons[84][4] = 3;
 
 document.getElementById("mainCanvas").onmousedown = function(e){
-  var x = (e.clientX * 4) - (((3 * s / 13) / 2) * (190 / 320));
+  var x = (e.clientX * 4);
+  x = (x - ((window.innerWidth - (s / 4)) * 2));
   var y = e.clientY * 4;
   if(e.which == 1){
     if(started && !flipping) update(x, y);
