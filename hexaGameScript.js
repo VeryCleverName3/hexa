@@ -1,12 +1,14 @@
 // Variables & stuff
+if(localStorage.mobile == undefined) localStorage.mobile = "false";
 var c = document.getElementById("mainCanvas");
 var convNum = 1.73205080757;
-c.height = window.innerHeight * 4;
+c.height = window.innerHeight;
+if(localStorage.mobile == "false") c.height *= 4;
+if(localStorage.mobile == "true") document.body.style.zoom = 1;
 c.width = c.height;
 s = c.width;
 var body = document.getElementById("body");
 var hexSize = 3;
-var mobile = false;
 var turn = 0;
 var players = 2;
 var changed = false;
@@ -16,6 +18,8 @@ var flipping = false;
 var ctx = c.getContext("2d");
 ctx.lineWidth = 10;
 var logo = new Image;
+var undoButton = new Image;
+undoButton.src = "Assets/ReplayButton.svg";
 var playButton = new Image;
 playButton.src = "Assets/PlayButton.svg";
 logo.src = "hexalogo.svg";
@@ -115,15 +119,19 @@ ontouchstart = function(e){
       ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
     }
   }
-  mobile = true;
+  localStorage.mobile = "true";
 }
 
 //Most stuff happens here
 function  update(mX, mY){
+  if(mX >= (s * (6 /8)) && mY >= (s * (6 /8))) undo();
   console.log("(" + mX + ", " + mY + ")");
   for(var i = 0; i < 91; i++){
     if((mX >= hexagons[i][0][0] - (s/26) && mX <= hexagons[i][0][0] + (s/26) && mY >= hexagons[i][0][1] - (s/26) && mY <= hexagons[i][0][1] + (s/26)) && hexagons[i][2] == 0){
-      oldMoves[turnNumber] = hexagons.slice();
+      oldMoves[turnNumber] = [];
+      for(var j = 0; j < 91; j++){
+        oldMoves[turnNumber][j] = hexagons[j][2];
+      }
       turnNumber++;
       switch(turn){
         case 0:
@@ -370,7 +378,7 @@ function makeHexagons(){
 function drawHexagons(){
   var shrinkSize = 0;
   var speed = 0.05;
-  if(mobile){
+  if(localStorage.mobile == "true"){
     ctx.clearRect(0, 0, s, s);
     for(var i = 0; i < 91; i++){
       ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
@@ -379,6 +387,7 @@ function drawHexagons(){
     var shrinkLoop = setInterval(function(){
       ctx.fillStyle = "white";
       ctx.clearRect(0, 0, s, s);
+      ctx.drawImage(undoButton, s * (6/8), s * (6/8), hexSize * s / 13, hexSize * s / 13);
       for(var i = 0; i < 91; i++){
         //ctx.rotate(30*Math.PI/180);
         ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
@@ -397,16 +406,17 @@ function flip(hex, nState){
   if(flipping){
     setTimeout(function(){flip(hex, nState)}, 500);
   } else {
-    if(!mobile) flipping = true;
+    if(localStorage.mobile == "false") flipping = true;
     var shrinkSize = 1;
     var speed = -0.1;
-    if(mobile){
+    if(localStorage.mobile == "true"){
       drawHexagons();
       flipping = false;
     } else {
       var shrinkLoop = setInterval(function(){
         ctx.fillStyle = "white";
         ctx.clearRect(0, 0, s, s);
+        ctx.drawImage(undoButton, s * (6/8), s * (6/8), hexSize * s / 13, hexSize * s / 13);
         for(var i = 0; i < 91; i++){
           //ctx.rotate(30*Math.PI/180);
           if(i != hex) ctx.drawImage(hexImgs[hexagons[i][4]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
@@ -426,6 +436,7 @@ function flip(hex, nState){
     }
   }
 }
+
 function bgColorFadeTo(r, g, b){
   clearInterval(colorLoop);
   var dif = 0;
@@ -464,4 +475,44 @@ function bgColorFadeTo(r, g, b){
       clearInterval(colorLoop);
     }
   }, 1000/60);
+}
+
+function undo(){
+  if(turnNumber > 0){
+    turnNumber--;
+    for(var i = 0; i < 91; i++){
+      hexagons[i][2] = oldMoves[turnNumber][i];
+    }
+    if(turnNumber == 0) makeHexagons();
+    flipAllHexagons();
+  }
+}
+
+function flipAllHexagons(){
+  var shrinkSize = 1;
+  var speed = -0.1;
+  if(localStorage.mobile == "true"){
+    drawHexagons();
+  } else {
+    var shrinkLoop = setInterval(function(){
+      ctx.fillStyle = "white";
+      ctx.clearRect(0, 0, s, s);
+      ctx.drawImage(undoButton, s * (6/8), s * (6/8), hexSize * s / 13, hexSize * s / 13);
+      for(var i = 0; i < 91; i++){
+        //ctx.rotate(30*Math.PI/180);
+        ctx.drawImage(hexImgs[hexagons[i][4]], hexagons[i][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
+        //ctx.rotate(-30*Math.PI/180);
+      }
+      shrinkSize += speed;
+      if(shrinkSize < 0){
+        speed = 0.1;
+        for(var i = 0; i < 91; i++){
+          hexagons[i][4] = oldMoves[turnNumber][i];
+        }
+      }
+      if(shrinkSize > 1){
+        clearInterval(shrinkLoop);
+      }
+    }, 1000/60);
+  }
 }
