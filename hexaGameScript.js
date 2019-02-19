@@ -480,6 +480,28 @@ function bgColorFadeTo(r, g, b){
 function undo(){
   if(turnNumber > 0){
     turnNumber--;
+    turn--;
+    if(turn < 0) turn = players - 1;
+    switch(turn){
+      case 0:
+        bgColorFadeTo(255, 0, 0);
+        break;
+      case 1:
+        bgColorFadeTo(0, 150, 255);
+        break;
+      case 2:
+        bgColorFadeTo(255, 255, 0);
+        break;
+      case 3:
+        bgColorFadeTo(0, 255, 0);
+        break;
+      case 4:
+        bgColorFadeTo(255, 0, 255);
+        break;
+      case 5:
+        bgColorFadeTo(0, 255, 255);
+        break;
+    }
     for(var i = 0; i < 91; i++){
       hexagons[i][2] = oldMoves[turnNumber][i];
     }
