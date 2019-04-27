@@ -1,9 +1,11 @@
 // Variables & stuff
+var scale = 2;
 if(localStorage.mobile == undefined) localStorage.mobile = "false";
 var c = document.getElementById("mainCanvas");
 var convNum = 1.73205080757;
 c.height = window.innerHeight;
-if(localStorage.mobile == "false") c.height *= 4;
+if(localStorage.mobile == "false") c.height *= scale;
+document.body.style.zoom = 1 / scale;
 if(localStorage.mobile == "true") document.body.style.zoom = 1;
 c.width = c.height;
 s = c.width;
@@ -69,10 +71,10 @@ hexagons[30][4] = 3;
 hexagons[63][4] = 3;
 hexagons[84][4] = 3;
 
-document.getElementById("mainCanvas").onmousedown = function(e){
-  var x = (e.clientX * 4);
-  x = (x - ((window.innerWidth - (s / 4)) * 2));
-  var y = e.clientY * 4;
+onmousedown = function(e){
+  var x = (e.clientX * scale);
+  x -= ((window.innerWidth - (s / scale)) * (scale / 2));
+  var y = e.clientY * scale;
   if(e.which == 1){
     if(started && !flipping) update(x, y);
     if(!started){
@@ -377,7 +379,7 @@ function makeHexagons(){
 
 function drawHexagons(){
   var shrinkSize = 0;
-  var speed = 0.05;
+  var speed = 0.1;
   if(localStorage.mobile == "true"){
     ctx.clearRect(0, 0, s, s);
     for(var i = 0; i < 91; i++){
@@ -397,7 +399,7 @@ function drawHexagons(){
       if(shrinkSize > 1.05){
         clearInterval(shrinkLoop);
       }
-    }, 1000/60);
+    }, 1000/30);
   }
 }
 
@@ -408,7 +410,7 @@ function flip(hex, nState){
   } else {
     if(localStorage.mobile == "false") flipping = true;
     var shrinkSize = 1;
-    var speed = -0.1;
+    var speed = -0.2;
     if(localStorage.mobile == "true"){
       drawHexagons();
       flipping = false;
@@ -423,16 +425,16 @@ function flip(hex, nState){
           //ctx.rotate(-30*Math.PI/180);
         }
         ctx.drawImage(hexImgs[hexagons[hex][4]], hexagons[hex][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[hex][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
-        shrinkSize += speed;
-        if(shrinkSize < 0){
-          speed = 0.1;
+        if(shrinkSize <= 0){
+          speed = 0.2;
           hexagons[hex][4] = nState;
         }
+        shrinkSize += speed;
         if(shrinkSize > 1){
           flipping = false;
           clearInterval(shrinkLoop);
         }
-      }, 1000/60);
+      }, 1000/30);
     }
   }
 }
