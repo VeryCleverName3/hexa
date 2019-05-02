@@ -17,10 +17,29 @@
       margin-left: auto;
       margin-right: auto;
       display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
     }
+		#BackButton{
+			position: absolute;
+			left: 1vw;
+			height: 20vh;
+			width: 0vh;
+		}
+		#ReplayButton{
+			position: absolute;
+			left: 20vw;
+			height: 20vh;
+			width: 0vh;
+		}
   </style>
 </head>
 <body id="body">
+	<a href = "index.html"><img src="Assets/BackButton.svg" id="BackButton" /></a>
+	<a href = "javascript:replay();"><img src="Assets/ReplayButton.svg" id="ReplayButton"></a>
   <canvas id="mainCanvas"></canvas>
   <script src = "hexaGameScript.js">
   </script>

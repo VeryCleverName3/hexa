@@ -21,18 +21,22 @@ var ctx = c.getContext("2d");
 ctx.lineWidth = 10;
 var logo = new Image;
 var undoButton = new Image;
-undoButton.src = "Assets/ReplayButton.svg";
+undoButton.src = "Assets/UndoButton.svg";
+var replayButton = new Image;
+replayButton.src = "Assets/ReplayButton.svg";
+var backButton = new Image
+backButton.src = "Assets/BackButton.svg";
 var playButton = new Image;
 playButton.src = "Assets/PlayButton.svg";
 logo.src = "hexalogo.svg";
-var numbers = [0, 0, new Image, new Image, new Image, new Image, new Image];
+var numbers = [new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image];
 var oldMoves = [];
 var turnNumber = 0;
 var upArrow = new Image;
 var downArrow = new Image;
 upArrow.src = "Assets/UpArrow.svg";
 downArrow.src = "Assets/DownArrow.svg";
-for(var i = 2; i < numbers.length; i++){
+for(var i = 0; i < numbers.length; i++){
   numbers[i].src = "Assets/" + i + ".svg";
 }
 logo.onload = function(){ctx.drawImage(logo, 0, -s * (1/6), s, s);};
@@ -261,6 +265,8 @@ function start(){
     ctx.fillRect(0, 0, s, s);
     if(opacity >= 0.5 && !started){
       drawHexagons();
+      document.getElementById("BackButton").style.width = "20vh";
+      document.getElementById("ReplayButton").style.width = "20vh";
       started = true;
       bgColors = [255, 255, 255];
       bgColorFadeTo(255, 0, 0);
@@ -539,4 +545,65 @@ function flipAllHexagons(){
       }
     }, 1000/60);
   }
+}
+
+function getScore(){
+  var score = [0, 0, 0, 0, 0, 0];
+  for(var i = 0; i < hexagons.length; i++){
+    switch(hexagons[i][2]){
+      case 1:
+        score[0]++;
+        break;
+      case 2:
+        score[1]++;
+        break;
+      case 4:
+        score[2]++;
+        break;
+      case 5:
+        score[3]++;
+        break;
+      case 6:
+        score[4]++;
+        break;
+      case 7:
+        score[5]++;
+        break;
+    }
+  }
+  return score;
+}
+
+function replay(){
+  /*var replayer = setInterval(function(){
+    undo();
+    if(turnNumber == 0){
+      clearInterval(replayer);
+    }
+  }, 500);*/
+  for(var i = 0; i < 91; i++){
+    hexagons[i] = [[0, 0], [0, 0], 0, [-1, -1, -1, -1, -1, -1], 0];
+  }
+  makeHexagons();
+  //Input
+  hexagons[60][2] = 3;
+  hexagons[57][2] = 3;
+  hexagons[24][2] = 3;
+  hexagons[27][2] = 3;
+  hexagons[30][2] = 3;
+  hexagons[63][2] = 3;
+  hexagons[84][2] = 3;
+  hexagons[60][4] = 3;
+  hexagons[57][4] = 3;
+  hexagons[24][4] = 3;
+  hexagons[27][4] = 3;
+  hexagons[30][4] = 3;
+  hexagons[63][4] = 3;
+  hexagons[84][4] = 3;
+
+  turn = 0;
+
+  bgColorFadeTo(255, 0, 0);
+
+  flipAllHexagons();
 }
