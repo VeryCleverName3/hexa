@@ -52,17 +52,18 @@
 			font-size: 3vw;
 			top: 40vh;
 			left: 10vh;
-			border: solid 3vh;
-			background-color: white;
+			border: solid 0vh;
+			background-color: rgba(255, 255, 255, 0.75);
 			border-radius: 3vh;
-			border-color: white;
+			border-color: rgba(255, 255, 255, 0.75);
 			font-family: Yee;
-			height: 120vh;
-			width: 40vw;
+			height: 126vh;
+			width: 43vw;
 			line-height: 12.5vh;
 		}
 		.colorName{
-			padding-left: 1.5vw;
+			padding-left: 3.5vw;
+			opacity: 1;
 		}
   </style>
 </head>
@@ -71,7 +72,7 @@
 	<a href = "javascript:replay();"><img title="Replay" src="Assets/ReplayButton.svg" id="ReplayButton"></a>
   <canvas id="mainCanvas"></canvas>
 	<div id="scoreboard" hidden="true">
-		<h1 style="text-align:center;margin-top:1vh">SCORES</h1>
+		<h1 style="text-align:center;margin-top:4.5vh">SCORES</h1>
 		<div id="score0" class="colorName">Red: <span class="score">0</span></div>
 		<div id="score1" class="colorName">Blue: <span class="score">0</span></div>
 		<div id="score2" class="colorName">Yellow: <span class="score">0</span></div>
