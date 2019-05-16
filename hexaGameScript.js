@@ -226,6 +226,7 @@ function  update(mX, mY){
       }
     }
   }
+  updateScoreboard();
 }
 
 function start(){
@@ -267,6 +268,7 @@ function start(){
       drawHexagons();
       document.getElementById("BackButton").style.width = "20vh";
       document.getElementById("ReplayButton").style.width = "20vh";
+      updateScoreboard();
       started = true;
       bgColors = [255, 255, 255];
       bgColorFadeTo(255, 0, 0);
@@ -548,7 +550,7 @@ function flipAllHexagons(){
 }
 
 function getScore(){
-  var score = [0, 0, 0, 0, 0, 0];
+  var score = [0, 0, 0, 0, 0, 0, 0];
   for(var i = 0; i < hexagons.length; i++){
     switch(hexagons[i][2]){
       case 1:
@@ -568,6 +570,9 @@ function getScore(){
         break;
       case 7:
         score[5]++;
+        break;
+      case 0:
+        score[6]++;
         break;
     }
   }
@@ -606,4 +611,18 @@ function replay(){
   bgColorFadeTo(255, 0, 0);
 
   flipAllHexagons();
+  updateScoreboard();
+}
+
+function updateScoreboard(){
+  document.getElementById("scoreboard").hidden = false;
+  var scoreboard = document.getElementsByClassName("score");
+  document.getElementById("score6").hidden = false;
+  console.log(scoreboard);
+  for(var i = 0; i < 7; i++){
+    scoreboard[i].innerHTML = getScore()[i];
+    if(i >= players && i != 6){
+      document.getElementById("score" + i).hidden = true;
+    } else document.getElementById("score" + i).hidden = false;
+  }
 }

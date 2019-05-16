@@ -6,10 +6,20 @@
 	<link rel = "apple-touch-icon" href = "hexalogo.jpg">
 	<meta name = "viewport" content = "user-scalable=no">
   <style>
+	@font-face {
+		font-family: Yee;
+  	src: url(Assets/MavenPro-Black.ttf);
+	}
     body{
       margin: 0;
       padding: 0;
 			zoom: 0.25;
+			-webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			-khtml-user-select: none; /* Konqueror HTML */
+			-moz-user-select: none; /* Firefox */
+			-ms-user-select: none; /* Internet Explorer/Edge */
+			user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
     }
     #mainCanvas{
       padding-left: 0;
@@ -37,12 +47,39 @@
 			height: 20vh;
 			width: 0vh;
 		}
+		#scoreboard{
+			position: absolute;
+			font-size: 3vw;
+			top: 40vh;
+			left: 10vh;
+			border: solid 3vh;
+			background-color: white;
+			border-radius: 3vh;
+			border-color: white;
+			font-family: Yee;
+			height: 120vh;
+			width: 40vw;
+			line-height: 12.5vh;
+		}
+		.colorName{
+			padding-left: 1.5vw;
+		}
   </style>
 </head>
 <body id="body">
 	<a href = "index.html"><img src="Assets/BackButton.svg" id="BackButton" /></a>
 	<a href = "javascript:replay();"><img src="Assets/ReplayButton.svg" id="ReplayButton"></a>
   <canvas id="mainCanvas"></canvas>
+	<div id="scoreboard" hidden="true">
+		<h1 style="text-align:center;margin-top:1vh">SCORES</h1>
+		<div id="score0" class="colorName">Red: <span class="score">0</span></div>
+		<div id="score1" class="colorName">Blue: <span class="score">0</span></div>
+		<div id="score2" class="colorName">Yellow: <span class="score">0</span></div>
+		<div id="score3" class="colorName">Green: <span class="score">0</span></div>
+		<div id="score4" class="colorName">Purple: <span class="score">0</span></div>
+		<div id="score5" class="colorName">Cyan: <span class="score">0</span></div>
+		<div id="score6" class="colorName">Unfilled: <span class="score">0</span></div>
+	</div>
   <script src = "hexaGameScript.js">
   </script>
 </body>
