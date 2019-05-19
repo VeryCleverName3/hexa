@@ -40,6 +40,12 @@ for(var i = 0; i < numbers.length; i++){
   numbers[i].src = "Assets/" + i + ".svg";
 }
 logo.onload = function(){ctx.drawImage(logo, 0, -s * (1/6), s, s);};
+ctx.textAlign = "center";
+ctx.font = s / 25 + "px Yee";
+ctx.fillText("", 0, 0);
+document.fonts.onloadingdone = function () {
+  ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
+}
 playButton.onload = function(){ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);};
 downArrow.onload = function(){ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);};
 upArrow.onload = function(){ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);};
@@ -90,6 +96,7 @@ onmousedown = function(e){
         ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
         ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
         ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+        ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
       }
       if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
         players--;
@@ -98,6 +105,7 @@ onmousedown = function(e){
         ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
         ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
         ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+        ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
       }
     }
   }
@@ -115,6 +123,7 @@ ontouchstart = function(e){
       ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
       ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
       ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+      ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
     }
     if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
       players--;
@@ -123,6 +132,7 @@ ontouchstart = function(e){
       ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
       ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
       ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+      ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
     }
   }
   localStorage.mobile = "true";
