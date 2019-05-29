@@ -8,7 +8,12 @@
   <style>
 	@font-face {
 		font-family: Yee;
-  	src: url(Assets/MavenPro-Black.woff);
+  	src: url(Assets/MavenPro-Bold.ttf);
+	}
+
+	@font-face {
+		font-family: Yeee;
+  	src: url(Assets/MavenPro-Medium.ttf);
 	}
     body{
       margin: 0;
@@ -66,12 +71,22 @@
 			padding-left: 4.5vw;
 			opacity: 1;
 		}
+		#playButton{
+			position: absolute;
+			top: 100vh;
+			left: 45vw;
+		}
+		#actualPlayButton{
+			width: 100vh;
+			height: 100vh;
+		}
   </style>
 </head>
 <body id="body">
 	<a href = "index.html"><img title="Back" src="Assets/BackButton.svg" id="BackButton" /></a>
 	<a href = "javascript:replay();"><img title="Replay" src="Assets/ReplayButton.svg" id="ReplayButton"></a>
-  <canvas id="mainCanvas"></canvas>
+	<canvas id="mainCanvas"></canvas>
+	<div id="playButton"><img src="Assets/PlayButton.svg" alt="Play" id="actualPlayButton" title="Play" href="javascript:if(!started)start();"></img></div>
 	<div id="scoreboard" hidden="true">
 		<h1 style="text-align:center;margin-top:6.5vh">SCORES</h1>
 		<div id="score0" class="colorName">Red: <span class="score">0</span></div>

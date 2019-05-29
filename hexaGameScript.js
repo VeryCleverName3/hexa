@@ -41,12 +41,12 @@ for(var i = 0; i < numbers.length; i++){
 }
 logo.onload = function(){ctx.drawImage(logo, 0, -s * (1/6), s, s);};
 ctx.textAlign = "center";
-ctx.font = s / 25 + "px Yee";
+ctx.font = s / 25 + "px Yeee";
 ctx.fillText("", 0, 0);
 document.fonts.onloadingdone = function () {
-  ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
+  ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
 }
-playButton.onload = function(){ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);};
+//playButton.onload = function(){ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);};
 downArrow.onload = function(){ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);};
 upArrow.onload = function(){ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);};
 numbers[2].onload = function(){ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);};
@@ -92,20 +92,20 @@ onmousedown = function(e){
       if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
         players++;
         if(players > 6) players = 2;
-        ctx.clearRect(s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+        ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
         ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
         ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
         ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
-        ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
+        ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
       }
       if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
         players--;
         if(players < 2) players = 6;
-        ctx.clearRect(s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+        ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
         ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
         ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
         ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
-        ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
+        ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
       }
     }
   }
@@ -123,7 +123,7 @@ ontouchstart = function(e){
       ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
       ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
       ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
-      ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
+      ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
     }
     if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
       players--;
@@ -132,7 +132,7 @@ ontouchstart = function(e){
       ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
       ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
       ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
-      ctx.fillText("# Players:", s * (4.5 / 8), s * (3.0675 / 4));
+      ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
     }
   }
   localStorage.mobile = "true";
@@ -273,8 +273,10 @@ function start(){
     opacity += 0.01;
     if(opacity > 1) opacity = 1;
     ctx.fillStyle = "rgba(255, 255, 255, " + opacity + ")";
+    document.getElementById("actualPlayButton").style.opacity = 1 - (opacity * 3);
     ctx.fillRect(0, 0, s, s);
     if(opacity >= 0.5 && !started){
+      document.getElementById("actualPlayButton").style.opacity = 0;
       drawHexagons();
       document.getElementById("BackButton").style.width = "20vh";
       document.getElementById("ReplayButton").style.width = "20vh";
