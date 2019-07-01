@@ -277,6 +277,7 @@ function start(){
     ctx.fillRect(0, 0, s, s);
     if(opacity >= 0.5 && !started){
       document.getElementById("actualPlayButton").style.opacity = 0;
+      document.getElementById("actualPlayButton").parentNode.removeChild(document.getElementById("actualPlayButton"));
       drawHexagons();
       document.getElementById("BackButton").style.width = "20vh";
       document.getElementById("ReplayButton").style.width = "20vh";
