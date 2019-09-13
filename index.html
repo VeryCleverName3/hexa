@@ -15,6 +15,38 @@
 		font-family: Yeee;
   	src: url(Assets/MavenPro-Medium.ttf);
 	}
+	@keyframes rotate{
+		from{
+			transform: rotate(0deg);
+		}
+		to{
+			transform: rotate(30deg);
+		}
+	}
+	@keyframes unrotate{
+		from{
+			transform: rotate(30deg);
+		}
+		to{
+			transform: rotate(0deg);
+		}
+	}
+	@keyframes bigify{
+		from{
+			transform: scale(1, 1);
+		}
+		to{
+			transform: scale(1.05, 1.05);
+		}
+	}
+	@keyframes unbigify{
+		from{
+			transform: scale(1.05, 1.05);
+		}
+		to{
+			transform: scale(1, 1);
+		}
+	}
     body{
       margin: 0;
       padding: 0;
@@ -73,12 +105,111 @@
 		}
 		#playButton{
 			position: absolute;
-			top: 100vh;
-			left: 45vw;
+			top: 130vh;
+			left: 65vw;
 		}
 		#actualPlayButton{
-			width: 100vh;
-			height: 100vh;
+			width: 40vh;
+			height: 40vh;
+		}
+		#actualPlayButton:hover{
+			animation-name: bigify;
+  			animation-duration: 0.5s;
+			animation-timing-function: ease;
+			transform: scale(1.05, 1.05);
+		}
+		#actualPlayButton:not(:hover){
+			animation-name: unbigify;
+  			animation-duration: 0.5s;
+			animation-timing-function: ease;
+		}
+		#optionsButton{
+			position: fixed;
+			top: 40px;
+			right: 0px;
+			width: 7.5%;
+			height: 7.5%;
+		}
+		#optionsButton:hover{
+			transform: rotate(30deg);
+			animation-name: rotate;
+  			animation-duration: 0.5s;
+			animation-timing-function: ease;
+		}
+		#optionsButton:not(:hover){
+			animation-name: unrotate;
+  			animation-duration: 0.5s;
+			animation-timing-function: ease;
+		}
+		#optionsScreen{
+			display: none;
+			margin: auto;
+			position: fixed;
+			width: 75%;
+			height: 84%;
+			font: 4vh Yeee;
+			border-radius: 100px;
+			z-index: 9999;
+			background-color: #eeeeee;
+			text-align: center;
+			box-shadow: 2vw 2vh 5vh rgba(0, 0, 0, 0.5);
+			left: 50%;
+			top: 7.5%;
+			margin-left: -37.5%;
+			text-align: left;
+		}
+		#optionsScreen h1{
+			text-align: center;
+			margin: auto;
+			margin-top: 2.25%;
+		}
+		#optionsScreenContent{
+			margin-top: 5%;
+			margin-left: 7.5%;
+		}
+		#winScreen{
+			display: none;
+			margin: auto;
+			position: fixed;
+			width: 22.5%;
+			height: 10%;
+			border-radius: 20px;
+			z-index: 9999;
+			background-color: #f0f0f0;
+			text-align: center;
+			box-shadow: 2vw 2vh 5vh rgba(0, 0, 0, 0.5);
+			left: 76.25%;
+			top: 42.5%;
+			margin-left: -37.5%;
+			font-size: 10vh;
+			opacity: 0.95;
+			font-family: Yee;
+			text-align: center;
+		}
+		#winText{
+			margin: auto;
+			text-align: center;
+			vertical-align: middle;
+		}
+		input{
+			height: 4vh;
+			width: 4vh;
+			margin-top: 1.75vh;
+		}
+		#turnTimerBox{
+			display: none;
+		}
+		#actualTurnTimerBox{
+			font-size: 5vh;
+			width: 20%;
+			height: 5%;
+			margin-top: 0;
+			font-family: Yee;
+			text-align: center;
+			border-radius: 0px;
+		}
+		.flexBox{
+			display: flex;
 		}
   </style>
 </head>
@@ -86,7 +217,7 @@
 	<a href = "index.html"><img title="Back" src="Assets/BackButton.svg" id="BackButton" /></a>
 	<a href = "javascript:replay();"><img title="Replay" src="Assets/ReplayButton.svg" id="ReplayButton"></a>
 	<canvas id="mainCanvas"></canvas>
-	<div id="playButton"><img src="Assets/PlayButton.svg" alt="Play" id="actualPlayButton" title="Play" href="javascript:if(!started)start();"></img></div>
+	<div id="playButton"><a href="javascript:start();"><img src="Assets/PlayButtonBetter.svg" alt="Play" id="actualPlayButton"></img></a></div>
 	<div id="scoreboard" hidden="true">
 		<h1 style="text-align:center;margin-top:6.5vh">SCORES</h1>
 		<div id="score0" class="colorName">Red: <span class="score">0</span></div>
@@ -96,6 +227,18 @@
 		<div id="score4" class="colorName">Purple: <span class="score">0</span></div>
 		<div id="score5" class="colorName">Cyan: <span class="score">0</span></div>
 		<div id="score6" class="colorName">Unfilled: <span class="score">0</span></div>
+	</div>
+		<a href="javascript:openOptions();"><img id="optionsButton" src="Assets/OptionsButton.svg"></img></a>
+	<div id="optionsScreen">
+		<h1>Options:</h1>
+		<div id="optionsScreenContent">
+			<h2>
+				<div class="flexBox"><input type="checkbox" onclick="javascript:turnTimerBox()" id="turnTimerCheckBox"></input> &nbsp; Turn timer &nbsp;<div id="turnTimerBox"><input id="actualTurnTimerBox" type="text" value="15">&nbsp;s</input></div></div>
+			</h2>
+		</div>
+	</div>
+	<div id="winScreen">
+
 	</div>
   <script src = "hexaGameScript.js">
   </script>

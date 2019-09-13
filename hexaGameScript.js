@@ -81,33 +81,58 @@ hexagons[30][4] = 3;
 hexagons[63][4] = 3;
 hexagons[84][4] = 3;
 
+var optionsOpen = false;
+
 onmousedown = function(e){
+  if(!optionsOpen){
+    var x = (e.clientX * scale);
+    x -= ((window.innerWidth - (s / scale)) * (scale / 2));
+    var y = e.clientY * scale;
+    if(e.which == 1){
+      if(started && !flipping) update(x, y);
+      if(!started){
+        //if(Math.hypot(y - s * (3/4), x -  s * (1/4)) < s / 12) start();
+        if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
+          players++;
+          if(players > 6) players = 2;
+          ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+          ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+          ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+          ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+          ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+        }
+        if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
+          players--;
+          if(players < 2) players = 6;
+          ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+          ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+          ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+          ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+          ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+        }
+      }
+    }
+  }
+}
+onmousemove = function(e){
   var x = (e.clientX * scale);
   x -= ((window.innerWidth - (s / scale)) * (scale / 2));
   var y = e.clientY * scale;
-  if(e.which == 1){
-    if(started && !flipping) update(x, y);
-    if(!started){
-      if(Math.hypot(y - s * (3/4), x -  s * (1/4)) < s / 12) start();
-      if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
-        players++;
-        if(players > 6) players = 2;
-        ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
-        ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
-        ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
-        ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
-        ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
-      }
-      if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
-        players--;
-        if(players < 2) players = 6;
-        ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
-        ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
-        ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
-        ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
-        ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
-      }
-    }
+  if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
+    console.log("yeet");
+    ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+    ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+    ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+    ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+    ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+  }
+  if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
+    console.log("Yee");
+    ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+    ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+    ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+    ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+    ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
   }
 }
 ontouchstart = function(e){
@@ -237,6 +262,40 @@ function  update(mX, mY){
     }
   }
   updateScoreboard();
+  if(getScore()[6] == 0){
+    var winner;
+    var winnerNum = 0;
+    for(var i = 0; i < getScore().length; i++){
+      if(getScore()[i] > winnerNum){
+        winnerNum = getScore()[i];
+        winner = i;
+      }
+    }
+    switch(winner){
+      case 0:
+        winner = "Red";
+        break;
+      case 1:
+        winner = "Blue";
+        break;
+      case 2:
+        winner = "Yellow"
+        break;
+      case 3:
+        winner = "Green";
+        break;
+      case 4:
+        winner = "Purple";
+        break;
+      case 5:
+        winner = "Cyan";
+        break;
+    }
+    console.log(winner + " Wins!");
+    document.getElementById("winScreen").style.display = "flex";
+    document.getElementById("winScreen").innerHTML = "<span id='winText'>" + winner + " Wins!</span>";
+    
+  }
 }
 
 function start(){
@@ -286,6 +345,11 @@ function start(){
       bgColors = [255, 255, 255];
       bgColorFadeTo(255, 0, 0);
       clearInterval(startingSequence);
+      if(getTurnMaxTime()){
+        setInterval(function(){
+          turn++;
+        }, getMaxTurnTime() * 1000);
+      }
     }
   }, 1000/60);
 }
@@ -621,6 +685,10 @@ function replay(){
 
   turn = 0;
 
+  turnNumber = 0;
+
+  oldMoves = [];
+
   bgColorFadeTo(255, 0, 0);
 
   flipAllHexagons();
@@ -638,4 +706,33 @@ function updateScoreboard(){
       document.getElementById("score" + i).hidden = true;
     } else document.getElementById("score" + i).hidden = false;
   }
+}
+
+function openOptions(){
+  if(document.getElementById('optionsScreen').style.display == 'block'){
+    document.getElementById('optionsScreen').style.display = 'none';
+    optionsOpen = false;
+  } else {
+    document.getElementById('optionsScreen').style.display = 'block';
+    optionsOpen = true;
+  }
+}
+
+var turnTimerBoxChecked = false;
+
+function turnTimerBox(){
+  console.log("yeeee");
+  turnTimerBoxChecked = !turnTimerBoxChecked;
+  if(turnTimerBoxChecked){
+    document.getElementById("turnTimerBox").style.display = "block";
+    document.getElementById("turnTimerBox").display = "block";
+  } else {
+    document.getElementById("turnTimerBox").style.display = "none";
+    document.getElementById("turnTimerBox").display = "none";
+  }
+}
+
+function getTurnMaxTime(){
+  if(turnTimerBoxChecked) return 1 * document.getElementById("actualTurnTimerBox").value;
+  return false;
 }
