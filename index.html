@@ -47,6 +47,40 @@
 			transform: scale(1, 1);
 		}
 	}
+	@keyframes rotateHourglass{
+		22.22222222%{
+			transform: rotate(0deg);
+		}
+		33.3333333333%{
+			transform: rotate(180deg);
+		}
+		72.2222222222%{
+			transform: rotate(180deg);
+		}
+		83.3333333333%{
+			transform: rotate(360deg);
+		}
+		99.99999999999999%{
+			transform: rotate(360deg);
+		}
+		100%{
+			transform: rotate(0deg);
+		}
+	}
+	@keyframes flipYDimensionThingy{
+		28.23%{
+			transform: scaleY(1);
+		}
+		28.232323232323%{
+			transform: scaleY(-1);
+		}
+		78.23%{
+			transform: scaleY(-1);
+		}
+		78.2323232323%{
+			transform: scaleY(1);
+		}
+	}
     body{
       margin: 0;
       padding: 0;
@@ -211,6 +245,40 @@
 		.flexBox{
 			display: flex;
 		}
+		#timerContainer{
+			position: fixed;
+			right: 15%;
+			top: 40%;
+			display: none;
+			font-family: Yee;
+			font-size: 13vh;
+		}
+		#timer{
+			transform: rotate(0deg);
+			animation-name: rotateHourglass;
+			animation-duration: 4s;
+			animation-iteration-count: infinite;
+			animation-timing-function: ease-in-out;
+		}
+		#timerAgain{
+			animation-name: flipYDimensionThingy;
+			animation-duration: 4s;
+			animation-iteration-count: infinite;
+			animation-timing-function: ease-in-out;
+		}
+		#timerImage{
+			height: 20vh;
+			width: 20vh;
+		}
+		#time{
+			text-align: left;
+			position: fixed;
+			right: 10%;
+			top: 40.85%;
+			display: none;
+			font-family: Yee;
+			font-size: 13vh;
+		}
   </style>
 </head>
 <body id="body">
@@ -242,5 +310,7 @@
 	</div>
   <script src = "hexaGameScript.js">
   </script>
+  <div id="timerContainer"><div id = "timer"><div id="timerAgainYee"><img id="timerImage" src="Assets/Hourglass.svg"></img></div></div></div>
+  <div id="time"></div>
 </body>
 </html>

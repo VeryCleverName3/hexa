@@ -81,6 +81,8 @@ hexagons[30][4] = 3;
 hexagons[63][4] = 3;
 hexagons[84][4] = 3;
 
+var time = 0;
+
 var optionsOpen = false;
 
 onmousedown = function(e){
@@ -118,7 +120,7 @@ onmousemove = function(e){
   var x = (e.clientX * scale);
   x -= ((window.innerWidth - (s / scale)) * (scale / 2));
   var y = e.clientY * scale;
-  if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
+  if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50 && !started){
     console.log("yeet");
     ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
     ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
@@ -126,7 +128,7 @@ onmousemove = function(e){
     ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
     ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
   }
-  if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
+  if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50 && !started){
     console.log("Yee");
     ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
     ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
@@ -238,6 +240,8 @@ function  update(mX, mY){
           }
       } while (changed);
       turn++;
+      time = 0;
+      document.getElementById("time").innerHTML = getTurnMaxTime() - time;
       if(turn >= players) turn = 0;
       switch(turn){
         case 0:
@@ -299,6 +303,38 @@ function  update(mX, mY){
 }
 
 function start(){
+
+  var makeTimerHappen = setInterval(function(){
+    time++;
+    console.log(time);
+    document.getElementById("time").innerHTML = getTurnMaxTime() - time;
+    if(time >= getTurnMaxTime() && getTurnMaxTime() != 0){
+      time = 0;
+      document.getElementById("time").innerHTML = getTurnMaxTime() - time;
+      turn++;
+      if(turn >= players) turn = 0;
+      switch(turn){
+        case 0:
+          bgColorFadeTo(255, 0, 0);
+          break;
+        case 1:
+          bgColorFadeTo(0, 150, 255);
+          break;
+        case 2:
+          bgColorFadeTo(255, 255, 0);
+          break;
+        case 3:
+          bgColorFadeTo(0, 255, 0);
+          break;
+        case 4:
+          bgColorFadeTo(255, 0, 255);
+          break;
+        case 5:
+          bgColorFadeTo(0, 255, 255);
+          break;
+      }
+    }
+  }, 1000);
   /*
   var logoY =  -s * (1/6);
   var choicesY = 0;*/
@@ -341,6 +377,10 @@ function start(){
       document.getElementById("BackButton").style.width = "20vh";
       document.getElementById("ReplayButton").style.width = "20vh";
       updateScoreboard();
+      if(turnTimerBoxChecked){
+        document.getElementById("timerContainer").style.display = "block";
+        document.getElementById("time").style.display = "block";
+      }
       started = true;
       bgColors = [255, 255, 255];
       bgColorFadeTo(255, 0, 0);
@@ -733,6 +773,9 @@ function turnTimerBox(){
 }
 
 function getTurnMaxTime(){
+  if(document.getElementById("actualTurnTimerBox").value > 60){
+    document.getElementById("actualTurnTimerBox").value = 60
+  }
   if(turnTimerBoxChecked) return 1 * document.getElementById("actualTurnTimerBox").value;
   return false;
 }
