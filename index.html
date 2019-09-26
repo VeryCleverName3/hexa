@@ -49,26 +49,32 @@
 	}
 	@keyframes rotateHourglass{
 		22.22222222%{
-			transform: rotate(0deg);
+			transform: scaleY(1);
+		}
+		27.777777777%{
+			transform: scaleY(0);
 		}
 		33.3333333333%{
-			transform: rotate(180deg);
+			transform: scaleY(1);
 		}
 		72.2222222222%{
-			transform: rotate(180deg);
+			transform: scaleY(1);
+		}
+		77.7777777777%{
+			transform: scaleY(0);
 		}
 		83.3333333333%{
-			transform: rotate(360deg);
+			transform: scaleY(1);
 		}
 		99.99999999999999%{
-			transform: rotate(360deg);
+			transform: scaleY(1);
 		}
 		100%{
-			transform: rotate(0deg);
+			transform: scaleY(1);
 		}
 	}
 	@keyframes flipYDimensionThingy{
-		28.23%{
+		0%{
 			transform: scaleY(1);
 		}
 		28.232323232323%{
@@ -77,7 +83,7 @@
 		78.23%{
 			transform: scaleY(-1);
 		}
-		78.2323232323%{
+		100%{
 			transform: scaleY(1);
 		}
 	}
@@ -216,7 +222,7 @@
 			top: 42.5%;
 			margin-left: -37.5%;
 			font-size: 10vh;
-			opacity: 0.95;
+			opacity: 1;
 			font-family: Yee;
 			text-align: center;
 		}
@@ -242,6 +248,18 @@
 			text-align: center;
 			border-radius: 0px;
 		}
+		#chessTimerBox{
+			display: none;
+		}
+		#actualChessTimerBox{
+			font-size: 5vh;
+			width: 20%;
+			height: 5%;
+			margin-top: 0;
+			font-family: Yee;
+			text-align: center;
+			border-radius: 0px;
+		}
 		.flexBox{
 			display: flex;
 		}
@@ -254,7 +272,7 @@
 			font-size: 13vh;
 		}
 		#timer{
-			transform: rotate(0deg);
+			transform: scaleY(1);
 			animation-name: rotateHourglass;
 			animation-duration: 4s;
 			animation-iteration-count: infinite;
@@ -279,6 +297,10 @@
 			font-family: Yee;
 			font-size: 13vh;
 		}
+		.chessTime{
+			margin-left: auto;
+			padding-right: 4.5vw;
+		}
   </style>
 </head>
 <body id="body">
@@ -288,13 +310,13 @@
 	<div id="playButton"><a href="javascript:start();"><img src="Assets/PlayButtonBetter.svg" alt="Play" id="actualPlayButton"></img></a></div>
 	<div id="scoreboard" hidden="true">
 		<h1 style="text-align:center;margin-top:6.5vh">SCORES</h1>
-		<div id="score0" class="colorName">Red: <span class="score">0</span></div>
-		<div id="score1" class="colorName">Blue: <span class="score">0</span></div>
-		<div id="score2" class="colorName">Yellow: <span class="score">0</span></div>
-		<div id="score3" class="colorName">Green: <span class="score">0</span></div>
-		<div id="score4" class="colorName">Purple: <span class="score">0</span></div>
-		<div id="score5" class="colorName">Cyan: <span class="score">0</span></div>
-		<div id="score6" class="colorName">Unfilled: <span class="score">0</span></div>
+		<div class="flexBox"><div id="score0" class="colorName">Red: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score1" class="colorName">Blue: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score2" class="colorName">Yellow: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score3" class="colorName">Green: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score4" class="colorName">Purple: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score5" class="colorName">Cyan: <span class="score">0</span></div><div class="chessTime"></div></div>
+		<div class="flexBox"><div id="score6" class="colorName">Unfilled: <span class="score">0</span></div><div class="chessTime"></div></div>
 	</div>
 		<a href="javascript:openOptions();"><img id="optionsButton" src="Assets/OptionsButton.svg"></img></a>
 	<div id="optionsScreen">
@@ -303,6 +325,9 @@
 			<h2>
 				<div class="flexBox"><input type="checkbox" onclick="javascript:turnTimerBox()" id="turnTimerCheckBox"></input> &nbsp; Turn timer &nbsp;<div id="turnTimerBox"><input id="actualTurnTimerBox" type="text" value="15">&nbsp;s</input></div></div>
 			</h2>
+			<h2>
+				<div class="flexBox"><input type="checkbox" onclick="javascript:chessTimerBox()" id="chessTimerCheckBox"></input> &nbsp; Chess timer &nbsp;<div id="chessTimerBox"><input id="actualChessTimerBox" type="text" value="3">&nbsp;m</input></div></div>
+			</h2>
 		</div>
 	</div>
 	<div id="winScreen">
@@ -310,7 +335,7 @@
 	</div>
   <script src = "hexaGameScript.js">
   </script>
-  <div id="timerContainer"><div id = "timer"><div id="timerAgainYee"><img id="timerImage" src="Assets/Hourglass.svg"></img></div></div></div>
+  <div id="timerContainer"><div id = "timer"><div id="timerAgainYee"><img id="timerImage" src="Assets/Hourglass2.svg"></img></div></div></div>
   <div id="time"></div>
 </body>
 </html>

@@ -11,6 +11,7 @@ c.width = c.height;
 s = c.width;
 var body = document.getElementById("body");
 var hexSize = 3;
+var makeTimerHappen;
 var turn = 0;
 var players = 2;
 var changed = false;
@@ -165,10 +166,16 @@ ontouchstart = function(e){
   localStorage.mobile = "true";
 }
 
+var winner = "yee";
+
 //Most stuff happens here
 function  update(mX, mY){
   if(mX >= (s * (6 /8)) && mY >= (s * (6 /8))) undo();
   console.log("(" + mX + ", " + mY + ")");
+  //Send mouse to shadow realm
+  if(winner != "yee"){
+    mX = "shadow realm";
+  }
   for(var i = 0; i < 91; i++){
     if((mX >= hexagons[i][0][0] - (s/26) && mX <= hexagons[i][0][0] + (s/26) && mY >= hexagons[i][0][1] - (s/26) && mY <= hexagons[i][0][1] + (s/26)) && hexagons[i][2] == 0){
       oldMoves[turnNumber] = [];
@@ -240,8 +247,12 @@ function  update(mX, mY){
           }
       } while (changed);
       turn++;
+      while(chessTimerBoxChecked && !(chessTimes[turn] > 0)){
+        turn++;
+        if(turn >= players) turn = 0;
+      }
       time = 0;
-      document.getElementById("time").innerHTML = getTurnMaxTime() - time;
+      startTimerThingy();
       if(turn >= players) turn = 0;
       switch(turn){
         case 0:
@@ -267,7 +278,6 @@ function  update(mX, mY){
   }
   updateScoreboard();
   if(getScore()[6] == 0){
-    var winner;
     var winnerNum = 0;
     for(var i = 0; i < getScore().length; i++){
       if(getScore()[i] > winnerNum){
@@ -304,37 +314,7 @@ function  update(mX, mY){
 
 function start(){
 
-  var makeTimerHappen = setInterval(function(){
-    time++;
-    console.log(time);
-    document.getElementById("time").innerHTML = getTurnMaxTime() - time;
-    if(time >= getTurnMaxTime() && getTurnMaxTime() != 0){
-      time = 0;
-      document.getElementById("time").innerHTML = getTurnMaxTime() - time;
-      turn++;
-      if(turn >= players) turn = 0;
-      switch(turn){
-        case 0:
-          bgColorFadeTo(255, 0, 0);
-          break;
-        case 1:
-          bgColorFadeTo(0, 150, 255);
-          break;
-        case 2:
-          bgColorFadeTo(255, 255, 0);
-          break;
-        case 3:
-          bgColorFadeTo(0, 255, 0);
-          break;
-        case 4:
-          bgColorFadeTo(255, 0, 255);
-          break;
-        case 5:
-          bgColorFadeTo(0, 255, 255);
-          break;
-      }
-    }
-  }, 1000);
+  startTimerThingy();
   /*
   var logoY =  -s * (1/6);
   var choicesY = 0;*/
@@ -381,15 +361,18 @@ function start(){
         document.getElementById("timerContainer").style.display = "block";
         document.getElementById("time").style.display = "block";
       }
+      if(chessTimerBoxChecked){
+        setChessTimes();
+      }
       started = true;
       bgColors = [255, 255, 255];
       bgColorFadeTo(255, 0, 0);
       clearInterval(startingSequence);
-      if(getTurnMaxTime()){
+      /*if(getTurnMaxTime()){
         setInterval(function(){
           turn++;
         }, getMaxTurnTime() * 1000);
-      }
+      }*/
     }
   }, 1000/60);
 }
@@ -514,7 +497,7 @@ function drawHexagons(){
     var shrinkLoop = setInterval(function(){
       ctx.fillStyle = "white";
       ctx.clearRect(0, 0, s, s);
-      ctx.drawImage(undoButton, s * (6/8), s * (6/8), hexSize * s / 13, hexSize * s / 13);
+      ctx.drawImage(undoButton, s * (7/8), s * (6/8), hexSize * s / 30, hexSize * s / 30);
       for(var i = 0; i < 91; i++){
         //ctx.rotate(30*Math.PI/180);
         ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
@@ -543,7 +526,7 @@ function flip(hex, nState){
       var shrinkLoop = setInterval(function(){
         ctx.fillStyle = "white";
         ctx.clearRect(0, 0, s, s);
-        ctx.drawImage(undoButton, s * (6/8), s * (6/8), hexSize * s / 13, hexSize * s / 13);
+        ctx.drawImage(undoButton, s * (7/8), s * (6/8), hexSize * s / 30, hexSize * s / 30);
         for(var i = 0; i < 91; i++){
           //ctx.rotate(30*Math.PI/180);
           if(i != hex) ctx.drawImage(hexImgs[hexagons[i][4]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
@@ -634,6 +617,7 @@ function undo(){
     }
     if(turnNumber == 0) makeHexagons();
     flipAllHexagons();
+    startTimerThingy();
   }
 }
 
@@ -646,7 +630,7 @@ function flipAllHexagons(){
     var shrinkLoop = setInterval(function(){
       ctx.fillStyle = "white";
       ctx.clearRect(0, 0, s, s);
-      ctx.drawImage(undoButton, s * (6/8), s * (6/8), hexSize * s / 13, hexSize * s / 13);
+      ctx.drawImage(undoButton, s * (7/8), s * (6/8), hexSize * s / 30, hexSize * s / 30);
       for(var i = 0; i < 91; i++){
         //ctx.rotate(30*Math.PI/180);
         ctx.drawImage(hexImgs[hexagons[i][4]], hexagons[i][0][0]-(shrinkSize*hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), shrinkSize*hexSize*s/13, hexSize*s/13);
@@ -729,10 +713,17 @@ function replay(){
 
   oldMoves = [];
 
+  setChessTimes();
+
+  startTimerThingy();
+  winner = "yee";
+
   bgColorFadeTo(255, 0, 0);
 
   flipAllHexagons();
   updateScoreboard();
+
+  document.getElementById("winScreen").style.display = "none";
 }
 
 function updateScoreboard(){
@@ -760,8 +751,13 @@ function openOptions(){
 
 var turnTimerBoxChecked = false;
 
+var chessTimerBoxChecked = false;
+
+var chessTimes = [0, 0, 0, 0, 0, 0];
+
 function turnTimerBox(){
   console.log("yeeee");
+  document.getElementById("chessTimerCheckBox").checked = false;
   turnTimerBoxChecked = !turnTimerBoxChecked;
   if(turnTimerBoxChecked){
     document.getElementById("turnTimerBox").style.display = "block";
@@ -770,6 +766,10 @@ function turnTimerBox(){
     document.getElementById("turnTimerBox").style.display = "none";
     document.getElementById("turnTimerBox").display = "none";
   }
+  chessTimerBoxChecked = false;
+
+  document.getElementById("chessTimerBox").style.display = "none";
+  document.getElementById("chessTimerBox").display = "none";
 }
 
 function getTurnMaxTime(){
@@ -778,4 +778,169 @@ function getTurnMaxTime(){
   }
   if(turnTimerBoxChecked) return 1 * document.getElementById("actualTurnTimerBox").value;
   return false;
+}
+
+function setChessTimes(){
+  for(var i = 0; i < chessTimes.length; i++){
+    chessTimes[i] = Math.floor(document.getElementById("actualChessTimerBox").value * 60 + 0.5);
+  }
+}
+
+function chessTimerBox(){
+  document.getElementById("turnTimerCheckBox").checked = false;
+  console.log("yeeee");
+  chessTimerBoxChecked = !chessTimerBoxChecked;
+  if(chessTimerBoxChecked){
+    document.getElementById("chessTimerBox").style.display = "block";
+    document.getElementById("chessTimerBox").display = "block";
+  } else {
+    document.getElementById("chessTimerBox").style.display = "none";
+    document.getElementById("chessTimerBox").display = "none";
+  }
+
+  turnTimerBoxChecked = false;
+
+  document.getElementById("turnTimerBox").style.display = "none";
+  document.getElementById("turnTimerBox").display = "none";
+}
+
+function startTimerThingy(){
+  time = 0;
+  if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
+    document.getElementById("time").innerHTML = getTurnMaxTime() - time + "&nbsp;&nbsp;";
+  } else document.getElementById("time").innerHTML = getTurnMaxTime() - time;
+  clearInterval(makeTimerHappen);
+  makeTimerHappen = setInterval(function(){
+    time++;
+    console.log(time);
+    if(turnTimerBoxChecked) {
+      if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
+        document.getElementById("time").innerHTML = getTurnMaxTime() - time + "&nbsp;&nbsp;";
+      } else document.getElementById("time").innerHTML = getTurnMaxTime() - time;
+    }
+    if(time >= getTurnMaxTime() && getTurnMaxTime() != 0){
+      time = 0;
+      if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
+        document.getElementById("time").innerHTML = getTurnMaxTime() - time + "&nbsp;&nbsp;";
+      } else document.getElementById("time").innerHTML = getTurnMaxTime() - time;
+      turn++;
+      if(turn >= players) turn = 0;
+      switch(turn){
+        case 0:
+          bgColorFadeTo(255, 0, 0);
+          break;
+        case 1:
+          bgColorFadeTo(0, 150, 255);
+          break;
+        case 2:
+          bgColorFadeTo(255, 255, 0);
+          break;
+        case 3:
+          bgColorFadeTo(0, 255, 0);
+          break;
+        case 4:
+          bgColorFadeTo(255, 0, 255);
+          break;
+        case 5:
+          bgColorFadeTo(0, 255, 255);
+          break;
+      }
+    } else if(chessTimerBoxChecked){
+      if(chessTimes[turn] > 0){
+        chessTimes[turn]--;
+      }
+      if(chessTimes[turn] <= 0){
+        chessTimes[turn] = "0:00";
+        if(getPlayersLeft() == 1){
+          for(var i = 0; i < players; i++){
+            if(chessTimes[i] > 0){
+              winner = i;
+            }
+          }
+          switch(winner){
+            case 0:
+              winner = "Red";
+              break;
+            case 1:
+              winner = "Blue";
+              break;
+            case 2:
+              winner = "Yellow"
+              break;
+            case 3:
+              winner = "Green";
+              break;
+            case 4:
+              winner = "Purple";
+              break;
+            case 5:
+              winner = "Cyan";
+              break;
+          }
+          console.log(winner + " Wins!");
+          document.getElementById("winScreen").style.display = "flex";
+          document.getElementById("winScreen").innerHTML = "<span id='winText'>" + winner + " Wins!</span>";
+          return "Yeet";
+        }
+        while(!(chessTimes[turn + 1] > 0)){
+          turn++;
+          if(turn >= players){
+            turn = 0;
+          }
+        }
+        switchTurn();
+      }
+      for(var i = 0; i < players; i++){
+        document.getElementsByClassName("chessTime")[i].innerHTML = secondsToMinuteText(chessTimes[i]);
+      }
+    }
+  }, 1000);
+}
+function secondsToMinuteText(n){
+  if(!(n > 0)){
+    return "0:00";
+  }
+  var s = "";
+  s += Math.floor(n / 60);
+  s += ":";
+  if(n % 60 < 10){
+    s += "0";
+  }
+  s += (n % 60);
+  return s;
+}
+
+function switchTurn(){
+  turn++;
+  if(turn >= players) turn = 0;
+  switch(turn){
+    case 0:
+      bgColorFadeTo(255, 0, 0);
+      break;
+    case 1:
+      bgColorFadeTo(0, 150, 255);
+      break;
+    case 2:
+      bgColorFadeTo(255, 255, 0);
+      break;
+    case 3:
+      bgColorFadeTo(0, 255, 0);
+      break;
+    case 4:
+      bgColorFadeTo(255, 0, 255);
+      break;
+    case 5:
+      bgColorFadeTo(0, 255, 255);
+      break;
+  }
+}
+
+function getPlayersLeft(){
+  var numLeft = players;
+  for(var i = 0; i < players; i++){
+    if(!(chessTimes[i] > 0)){
+      numLeft--;
+    }
+  }
+  return numLeft;
 }
