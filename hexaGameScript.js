@@ -2,16 +2,17 @@
 var scale = 2;
 if(localStorage.mobile == undefined) localStorage.mobile = "false";
 var c = document.getElementById("mainCanvas");
-var convNum = 1.73205080757;
 c.height = window.innerHeight;
 if(localStorage.mobile == "false") c.height *= scale;
 document.body.style.zoom = 1 / scale;
 if(localStorage.mobile == "true") document.body.style.zoom = 1;
 c.width = c.height;
 s = c.width;
+var realTime = 0;
 var body = document.getElementById("body");
 var hexSize = 3;
 var makeTimerHappen;
+var importantNumber = 1.95;//1.95
 var turn = 0;
 var players = 2;
 var changed = false;
@@ -122,7 +123,7 @@ onmousemove = function(e){
   x -= ((window.innerWidth - (s / scale)) * (scale / 2));
   var y = e.clientY * scale;
   if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50 && !started){
-    console.log("yeet");
+    //console.log("yeet");
     ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
     ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
     ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
@@ -130,7 +131,7 @@ onmousemove = function(e){
     ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
   }
   if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50 && !started){
-    console.log("Yee");
+    //console.log("Yee");
     ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
     ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
     ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
@@ -171,7 +172,7 @@ var winner = "yee";
 //Most stuff happens here
 function  update(mX, mY){
   if(mX >= (s * (6 /8)) && mY >= (s * (6 /8))) undo();
-  console.log("(" + mX + ", " + mY + ")");
+  //console.log("(" + mX + ", " + mY + ")");
   //Send mouse to shadow realm
   if(winner != "yee"){
     mX = "shadow realm";
@@ -203,7 +204,7 @@ function  update(mX, mY){
           flip(i, 7);
           break;
       }
-      //console.log("This is hexagon " + i);
+      ////console.log("This is hexagon " + i);
       do {
         changed = !changed;
         var order;
@@ -279,35 +280,46 @@ function  update(mX, mY){
   updateScoreboard();
   if(getScore()[6] == 0){
     var winnerNum = 0;
+    var winners = [];
+    winner = "";
     for(var i = 0; i < getScore().length; i++){
-      if(getScore()[i] > winnerNum){
+      if(getScore()[i] >= winnerNum){
         winnerNum = getScore()[i];
-        winner = i;
+        winners.push(i);
       }
     }
-    switch(winner){
-      case 0:
-        winner = "Red";
-        break;
-      case 1:
-        winner = "Blue";
-        break;
-      case 2:
-        winner = "Yellow"
-        break;
-      case 3:
-        winner = "Green";
-        break;
-      case 4:
-        winner = "Purple";
-        break;
-      case 5:
-        winner = "Cyan";
-        break;
+    for(var i = 0; i < winners.length; i++){
+      switch(winners[i]){
+        case 0:
+          winners[i] = "red";
+          break;
+        case 1:
+          winners[i] = "blue";
+          break;
+        case 2:
+          winners[i] = "yellow"
+          break;
+        case 3:
+          winners[i] = "green";
+          break;
+        case 4:
+          winners[i] = "purple";
+          break;
+        case 5:
+          winners[i] = "cyan";
+          break;
+      }
+
+      winner += winners[i];
+      if(winners.length > 2 && i < winners.length - 1) winner += ", ";
+      if(i == winners.length - 2){
+        winner += ((winners.length <= 2)?" ":"") + "and ";
+      }
     }
-    console.log(winner + " Wins!");
+    winner = winner[0].toUpperCase() + winner.substring(1);
+    //console.log(winner + " Wins!");
     document.getElementById("winScreen").style.display = "flex";
-    document.getElementById("winScreen").innerHTML = "<span id='winText'>" + winner + " Wins!</span>";
+    document.getElementById("winScreen").innerHTML = "<span id='winText'>" + winner + ((winners.length > 1)?" tie!":" wins!")+" </span>";
     
   }
 }
@@ -319,6 +331,7 @@ function start(){
   var logoY =  -s * (1/6);
   var choicesY = 0;*/
   var opacity = 0;
+  setChessTimes();
   var startingSequence = setInterval(function(){
     /*logoY -= s/100;
     choicesY += s/100;
@@ -351,6 +364,10 @@ function start(){
     document.getElementById("actualPlayButton").style.opacity = 1 - (opacity * 3);
     ctx.fillRect(0, 0, s, s);
     if(opacity >= 0.5 && !started){
+      document.getElementById("turnTimerCheckBox").disabled = true;
+      document.getElementById("chessTimerCheckBox").disabled = true;
+      document.getElementsByClassName("timeStuff")[0].style.color = "darkgrey";
+      document.getElementsByClassName("timeStuff")[1].style.color = "darkgrey";
       document.getElementById("actualPlayButton").style.opacity = 0;
       document.getElementById("actualPlayButton").parentNode.removeChild(document.getElementById("actualPlayButton"));
       drawHexagons();
@@ -412,7 +429,7 @@ function makeHexagons(){
   }
   for(var i = 0; i < 91; i++){
     hexagons[i][0][1] = hexagons[i][1][1] - 5;
-    hexagons[i][0][0] = (hexagons[i][0][1]) / 1.9;
+    hexagons[i][0][0] = (hexagons[i][0][1]) / importantNumber;
     hexagons[i][0][0] = Math.abs(hexagons[i][0][0]);
     hexagons[i][0][0] += hexagons[i][1][0];
     hexagons[i][0][1] += 5;
@@ -730,7 +747,7 @@ function updateScoreboard(){
   document.getElementById("scoreboard").hidden = false;
   var scoreboard = document.getElementsByClassName("score");
   document.getElementById("score6").hidden = false;
-  console.log(scoreboard);
+  //console.log(scoreboard);
   for(var i = 0; i < 7; i++){
     scoreboard[i].innerHTML = getScore()[i];
     if(i >= players && i != 6){
@@ -756,7 +773,7 @@ var chessTimerBoxChecked = false;
 var chessTimes = [0, 0, 0, 0, 0, 0];
 
 function turnTimerBox(){
-  console.log("yeeee");
+  //console.log("yeeee");
   document.getElementById("chessTimerCheckBox").checked = false;
   turnTimerBoxChecked = !turnTimerBoxChecked;
   if(turnTimerBoxChecked){
@@ -788,7 +805,7 @@ function setChessTimes(){
 
 function chessTimerBox(){
   document.getElementById("turnTimerCheckBox").checked = false;
-  console.log("yeeee");
+  //console.log("yeeee");
   chessTimerBoxChecked = !chessTimerBoxChecked;
   if(chessTimerBoxChecked){
     document.getElementById("chessTimerBox").style.display = "block";
@@ -805,14 +822,16 @@ function chessTimerBox(){
 }
 
 function startTimerThingy(){
+  realTime = 0;
   time = 0;
   if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
     document.getElementById("time").innerHTML = getTurnMaxTime() - time + "&nbsp;&nbsp;";
   } else document.getElementById("time").innerHTML = getTurnMaxTime() - time;
   clearInterval(makeTimerHappen);
   makeTimerHappen = setInterval(function(){
-    time++;
-    console.log(time);
+    realTime += 0.1;
+    time = Math.floor(realTime);
+    //console.log(time);
     if(turnTimerBoxChecked) {
       if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
         document.getElementById("time").innerHTML = getTurnMaxTime() - time + "&nbsp;&nbsp;";
@@ -820,6 +839,7 @@ function startTimerThingy(){
     }
     if(time >= getTurnMaxTime() && getTurnMaxTime() != 0){
       time = 0;
+      realTime = 0;
       if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
         document.getElementById("time").innerHTML = getTurnMaxTime() - time + "&nbsp;&nbsp;";
       } else document.getElementById("time").innerHTML = getTurnMaxTime() - time;
@@ -847,7 +867,7 @@ function startTimerThingy(){
       }
     } else if(chessTimerBoxChecked){
       if(chessTimes[turn] > 0){
-        chessTimes[turn]--;
+        chessTimes[turn] -= 0.1;
       }
       if(chessTimes[turn] <= 0){
         chessTimes[turn] = "0:00";
@@ -877,12 +897,13 @@ function startTimerThingy(){
               winner = "Cyan";
               break;
           }
-          console.log(winner + " Wins!");
+          //console.log(winner + " Wins!");
           document.getElementById("winScreen").style.display = "flex";
           document.getElementById("winScreen").innerHTML = "<span id='winText'>" + winner + " Wins!</span>";
           return "Yeet";
         }
         while(!(chessTimes[turn + 1] > 0)){
+          //console.log("hi");
           turn++;
           if(turn >= players){
             turn = 0;
@@ -891,10 +912,10 @@ function startTimerThingy(){
         switchTurn();
       }
       for(var i = 0; i < players; i++){
-        document.getElementsByClassName("chessTime")[i].innerHTML = secondsToMinuteText(chessTimes[i]);
+        document.getElementsByClassName("chessTime")[i].innerHTML = secondsToMinuteText(Math.ceil(chessTimes[i]));
       }
     }
-  }, 1000);
+  }, 100);
 }
 function secondsToMinuteText(n){
   if(!(n > 0)){

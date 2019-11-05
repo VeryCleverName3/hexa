@@ -47,6 +47,22 @@
 			transform: scale(1, 1);
 		}
 	}
+	@keyframes bigify2{
+		from{
+			transform: scale(1, 1);
+		}
+		to{
+			transform: scale(1.1, 1.1);
+		}
+	}
+	@keyframes unbigify2{
+		from{
+			transform: scale(1.1, 1.1);
+		}
+		to{
+			transform: scale(1, 1);
+		}
+	}
 	@keyframes rotateHourglass{
 		22.22222222%{
 			transform: scaleY(1);
@@ -212,7 +228,6 @@
 			margin: auto;
 			position: fixed;
 			width: 22.5%;
-			height: 10%;
 			border-radius: 20px;
 			z-index: 9999;
 			background-color: #f0f0f0;
@@ -225,6 +240,7 @@
 			opacity: 1;
 			font-family: Yee;
 			text-align: center;
+			
 		}
 		#winText{
 			margin: auto;
@@ -301,6 +317,24 @@
 			margin-left: auto;
 			padding-right: 4.5vw;
 		}
+		#x{
+			width: 6vh;
+			height: 6vh;
+			position: absolute;
+			right: 10vh;
+			top: 10vh;
+		}
+		#x:hover{
+			animation-name: bigify2;
+  			animation-duration: 0.3s;
+			animation-timing-function: ease;
+			transform: scale(1.1, 1.1);
+		}
+		#x:not(:hover){
+			animation-name: unbigify2;
+  			animation-duration: 0.3s;
+			animation-timing-function: ease;
+		}
   </style>
 </head>
 <body id="body">
@@ -323,11 +357,12 @@
 		<h1>Options:</h1>
 		<div id="optionsScreenContent">
 			<h2>
-				<div class="flexBox"><input type="checkbox" onclick="javascript:turnTimerBox()" id="turnTimerCheckBox"></input> &nbsp; Turn timer &nbsp;<div id="turnTimerBox"><input id="actualTurnTimerBox" type="text" value="15">&nbsp;s</input></div></div>
+				<div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:turnTimerBox()" id="turnTimerCheckBox"></input> &nbsp; Turn timer &nbsp;<div id="turnTimerBox"><input id="actualTurnTimerBox" type="text" value="15">&nbsp;s</input></div></div>
 			</h2>
 			<h2>
-				<div class="flexBox"><input type="checkbox" onclick="javascript:chessTimerBox()" id="chessTimerCheckBox"></input> &nbsp; Chess timer &nbsp;<div id="chessTimerBox"><input id="actualChessTimerBox" type="text" value="3">&nbsp;m</input></div></div>
+				<div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:chessTimerBox()" id="chessTimerCheckBox"></input> &nbsp; Chess timer &nbsp;<div id="chessTimerBox"><input id="actualChessTimerBox" type="text" value="3">&nbsp;m</input></div></div>
 			</h2>
+			<a  href="javascript:openOptions();"><img id = "x" src="Assets/x.svg"></img></a>
 		</div>
 	</div>
 	<div id="winScreen">
