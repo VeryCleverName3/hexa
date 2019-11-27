@@ -575,6 +575,17 @@ function bgColorFadeTo(r, g, b){
     if(bgColors[2] < b){
       bgColors[2] += speed;
     }
+
+    if(bgColors[0] >= r - speed && bgColors[0] <= r + speed ){
+      bgColors[0] = r;
+    }
+    if(bgColors[1] >= g - speed && bgColors[1] <= g + speed ){
+      bgColors[1] = g;
+    }
+    if(bgColors[2] >= b - speed && bgColors[2] <= b + speed ){
+      bgColors[2] = b;
+    }
+
     document.body.style.backgroundColor = "rgba(" + bgColors[0] + ", " + bgColors[1] + ", " + bgColors[2] + ", 0.3)";
     if(bgColors[0] == r && bgColors[1] == g && bgColors[2] == b){
       clearInterval(colorLoop);
@@ -1347,7 +1358,7 @@ function makeThePage(){
 function startOverAll(){
   makeThePage();
 
-  document.body.style.backgroundColor = "white"
+  document.body.style.backgroundColor = "white";
 
   scale = 2;
   if(localStorage.mobile == undefined) localStorage.mobile = "false";
