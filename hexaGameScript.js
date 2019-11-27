@@ -1,4 +1,6 @@
 // Variables & stuff
+makeThePage();
+
 var scale = 2;
 if(localStorage.mobile == undefined) localStorage.mobile = "false";
 var c = document.getElementById("mainCanvas");
@@ -9,7 +11,6 @@ if(localStorage.mobile == "true") document.body.style.zoom = 1;
 c.width = c.height;
 s = c.width;
 var realTime = 0;
-var body = document.getElementById("body");
 var hexSize = 3;
 var makeTimerHappen;
 var importantNumber = 1.95;//1.95
@@ -67,7 +68,7 @@ for(var i = 0; i < 91; i++){
   hexagons[i] = [[0, 0], [0, 0], 0, [-1, -1, -1, -1, -1, -1], 0];
 }
 makeHexagons();
-//Input
+
 hexagons[60][2] = 3;
 hexagons[57][2] = 3;
 hexagons[24][2] = 3;
@@ -86,6 +87,12 @@ hexagons[84][4] = 3;
 var time = 0;
 
 var optionsOpen = false;
+
+var turnTimerBoxChecked = false;
+
+var chessTimerBoxChecked = false;
+
+var chessTimes = [0, 0, 0, 0, 0, 0];
 
 onmousedown = function(e){
   if(!optionsOpen){
@@ -285,6 +292,10 @@ function  update(mX, mY){
     for(var i = 0; i < getScore().length; i++){
       if(getScore()[i] >= winnerNum){
         winnerNum = getScore()[i];
+      }
+    }
+    for(var i = 0; i < getScore().length; i++){
+      if(getScore()[i] == winnerNum){
         winners.push(i);
       }
     }
@@ -327,37 +338,9 @@ function  update(mX, mY){
 function start(){
 
   startTimerThingy();
-  /*
-  var logoY =  -s * (1/6);
-  var choicesY = 0;*/
   var opacity = 0;
   setChessTimes();
   var startingSequence = setInterval(function(){
-    /*logoY -= s/100;
-    choicesY += s/100;
-    ctx.fillStyle = "white";
-    ctx.clearRect(0, 0, s, s);
-    ctx.drawImage(logo, 0, logoY, s, s);
-/*
-    ctx.drawImage(hexImgs[1], 0, s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
-    ctx.drawImage(hexImgs[2], (hexSize*s/13/3), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
-    //3 player option
-    ctx.drawImage(hexImgs[1], s * (2.8/8), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
-    ctx.drawImage(hexImgs[2], s * (2.8/8) + (hexSize*s/13/3), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
-    ctx.drawImage(hexImgs[4], s * (3.1/8), s * (3/4) - (hexSize*s/13/3.4) + choicesY, hexSize*s/13, hexSize*s/13);
-    //4 player option
-    ctx.drawImage(hexImgs[1], s * (5.8/8), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
-    ctx.drawImage(hexImgs[2], s * (5.8/8) + (hexSize*s/13/3), s * (3/4) + choicesY, hexSize*s/13, hexSize*s/13);
-    ctx.drawImage(hexImgs[4], s * (6.1/8), s * (3/4) - (hexSize*s/13/3.4) + choicesY, hexSize*s/13, hexSize*s/13);
-    ctx.drawImage(hexImgs[5], s * (6.1/8) - (hexSize*s/13/3), s * (3/4) - (hexSize*s/13/3.4) + choicesY, hexSize*s/13, hexSize*s/13);
-    if(logoY < -s){
-      drawHexagons();
-      started = true;
-      body.style.backgroundColor = "rgba(255, 0, 0, 0.3)";
-      bgColors = [255, 0, 0];
-      clearInterval(startingSequence);
-    }
-    */
     opacity += 0.01;
     if(opacity > 1) opacity = 1;
     ctx.fillStyle = "rgba(255, 255, 255, " + opacity + ")";
@@ -385,11 +368,6 @@ function start(){
       bgColors = [255, 255, 255];
       bgColorFadeTo(255, 0, 0);
       clearInterval(startingSequence);
-      /*if(getTurnMaxTime()){
-        setInterval(function(){
-          turn++;
-        }, getMaxTurnTime() * 1000);
-      }*/
     }
   }, 1000/60);
 }
@@ -597,7 +575,7 @@ function bgColorFadeTo(r, g, b){
     if(bgColors[2] < b){
       bgColors[2] += speed;
     }
-    body.style.backgroundColor = "rgba(" + bgColors[0] + ", " + bgColors[1] + ", " + bgColors[2] + ", 0.3)";
+    document.body.style.backgroundColor = "rgba(" + bgColors[0] + ", " + bgColors[1] + ", " + bgColors[2] + ", 0.3)";
     if(bgColors[0] == r && bgColors[1] == g && bgColors[2] == b){
       clearInterval(colorLoop);
     }
@@ -765,12 +743,6 @@ function openOptions(){
     optionsOpen = true;
   }
 }
-
-var turnTimerBoxChecked = false;
-
-var chessTimerBoxChecked = false;
-
-var chessTimes = [0, 0, 0, 0, 0, 0];
 
 function turnTimerBox(){
   //console.log("yeeee");
@@ -964,4 +936,612 @@ function getPlayersLeft(){
     }
   }
   return numLeft;
+}
+
+function makeItEnglish(winners){
+  var winner = "";
+  for(var i = 0; i < winners.length; i++){
+    winner += winners[i];
+    if(winners.length > 2 && i < winners.length - 1) winner += ", ";
+    if(i == winners.length - 2){
+      winner += ((winners.length <= 2)?" ":"") + "and ";
+    }
+  }
+
+  return winner;
+}
+
+function makeThePage(){
+  document.body.innerHTML = `
+    <html>
+    <head>
+      <title>Hexa</title>
+      <link rel="icon" type = "png" href="greyhex.png" />
+      <meta name = "apple-mobile-web-app-capable" content = "yes">
+      <link rel = "apple-touch-icon" href = "hexalogo.jpg">
+      <meta name = "viewport" content = "user-scalable=no">
+      <style>
+      @font-face {
+        font-family: Yee;
+        src: url(Assets/MavenPro-Bold.ttf);
+      }
+
+      @font-face {
+        font-family: Yeee;
+        src: url(Assets/MavenPro-Medium.ttf);
+      }
+      @keyframes rotate{
+        from{
+          transform: rotate(0deg);
+        }
+        to{
+          transform: rotate(30deg);
+        }
+      }
+      @keyframes unrotate{
+        from{
+          transform: rotate(30deg);
+        }
+        to{
+          transform: rotate(0deg);
+        }
+      }
+      @keyframes bigify{
+        from{
+          transform: scale(1, 1);
+        }
+        to{
+          transform: scale(1.05, 1.05);
+        }
+      }
+      @keyframes unbigify{
+        from{
+          transform: scale(1.05, 1.05);
+        }
+        to{
+          transform: scale(1, 1);
+        }
+      }
+      @keyframes bigify2{
+        from{
+          transform: scale(1, 1);
+        }
+        to{
+          transform: scale(1.1, 1.1);
+        }
+      }
+      @keyframes unbigify2{
+        from{
+          transform: scale(1.1, 1.1);
+        }
+        to{
+          transform: scale(1, 1);
+        }
+      }
+      @keyframes rotateHourglass{
+        22.22222222%{
+          transform: scaleY(1);
+        }
+        27.777777777%{
+          transform: scaleY(0);
+        }
+        33.3333333333%{
+          transform: scaleY(1);
+        }
+        72.2222222222%{
+          transform: scaleY(1);
+        }
+        77.7777777777%{
+          transform: scaleY(0);
+        }
+        83.3333333333%{
+          transform: scaleY(1);
+        }
+        99.99999999999999%{
+          transform: scaleY(1);
+        }
+        100%{
+          transform: scaleY(1);
+        }
+      }
+      @keyframes flipYDimensionThingy{
+        0%{
+          transform: scaleY(1);
+        }
+        28.232323232323%{
+          transform: scaleY(-1);
+        }
+        78.23%{
+          transform: scaleY(-1);
+        }
+        100%{
+          transform: scaleY(1);
+        }
+      }
+        body{
+          margin: 0;
+          padding: 0;
+          zoom: 0.25;
+          -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+          -khtml-user-select: none; /* Konqueror HTML */
+          -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+        }
+        #mainCanvas{
+          padding-left: 0;
+          padding-right: 0;
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+        }
+      #BackButton{
+        position: absolute;
+        left: 3.3vw;
+        top: 5vh;
+        height: 20vh;
+        width: 0vh;
+      }
+      #ReplayButton{
+        position: absolute;
+        left: 18.3vw;
+        top: 5vh;
+        height: 20vh;
+        width: 0vh;
+      }
+      #scoreboard{
+        position: absolute;
+        font-size: 3vw;
+        top: 40vh;
+        left: 10vh;
+        border: solid 0vh;
+        background-color: rgba(255, 255, 255, 0.75);
+        border-radius: 3vh;
+        border-color: rgba(255, 255, 255, 0.75);
+        font-family: Yee;
+        height: 126vh;
+        width: 43vw;
+        line-height: 12.5vh;
+        box-shadow: 2vh 2vh 2vh rgba(0, 0, 0, 0.5);
+      }
+      .colorName{
+        padding-left: 4.5vw;
+        opacity: 1;
+      }
+      #playButton{
+        position: absolute;
+        top: 130vh;
+        left: 65vw;
+      }
+      #actualPlayButton{
+        width: 40vh;
+        height: 40vh;
+      }
+      #actualPlayButton:hover{
+        animation-name: bigify;
+        animation-duration: 0.5s;
+        animation-timing-function: ease;
+        transform: scale(1.05, 1.05);
+      }
+      #actualPlayButton:not(:hover){
+        animation-name: unbigify;
+        animation-duration: 0.5s;
+        animation-timing-function: ease;
+      }
+      #optionsButton{
+        position: fixed;
+        top: 40px;
+        right: 0px;
+        width: 7.5%;
+        height: 7.5%;
+      }
+      #optionsButton:hover{
+        transform: rotate(30deg);
+        animation-name: rotate;
+        animation-duration: 0.5s;
+        animation-timing-function: ease;
+      }
+      #optionsButton:not(:hover){
+        animation-name: unrotate;
+        animation-duration: 0.5s;
+        animation-timing-function: ease;
+      }
+      #optionsScreen{
+        display: none;
+        margin: auto;
+        position: fixed;
+        width: 75%;
+        height: 84%;
+        font: 4vh Yeee;
+        border-radius: 100px;
+        z-index: 9999;
+        background-color: #eeeeee;
+        text-align: center;
+        box-shadow: 2vw 2vh 5vh rgba(0, 0, 0, 0.5);
+        left: 50%;
+        top: 7.5%;
+        margin-left: -37.5%;
+        text-align: left;
+      }
+      #optionsScreen h1{
+        text-align: center;
+        margin: auto;
+        margin-top: 2.25%;
+      }
+      #optionsScreenContent{
+        margin-top: 5%;
+        margin-left: 7.5%;
+      }
+      #winScreen{
+        display: none;
+        margin: auto;
+        position: fixed;
+        width: 22.5%;
+        border-radius: 20px;
+        z-index: 9999;
+        background-color: #f0f0f0;
+        text-align: center;
+        box-shadow: 2vw 2vh 5vh rgba(0, 0, 0, 0.5);
+        left: 76.25%;
+        top: 42.5%;
+        margin-left: -37.5%;
+        font-size: 10vh;
+        opacity: 1;
+        font-family: Yee;
+        text-align: center;
+        padding-top: 2vh;
+        padding-bottom: 2vh;
+      }
+      #winText{
+        margin: auto;
+        text-align: center;
+        vertical-align: middle;
+      }
+      input{
+        height: 4vh;
+        width: 4vh;
+        margin-top: 1.75vh;
+      }
+      #turnTimerBox{
+        display: none;
+      }
+      #actualTurnTimerBox{
+        font-size: 5vh;
+        width: 20%;
+        height: 5%;
+        margin-top: 0;
+        font-family: Yee;
+        text-align: center;
+        border-radius: 0px;
+      }
+      #chessTimerBox{
+        display: none;
+      }
+      #actualChessTimerBox{
+        font-size: 5vh;
+        width: 20%;
+        height: 5%;
+        margin-top: 0;
+        font-family: Yee;
+        text-align: center;
+        border-radius: 0px;
+      }
+      .flexBox{
+        display: flex;
+      }
+      #timerContainer{
+        position: fixed;
+        right: 15%;
+        top: 40%;
+        display: none;
+        font-family: Yee;
+        font-size: 13vh;
+      }
+      #timer{
+        transform: scaleY(1);
+        animation-name: rotateHourglass;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+      #timerAgain{
+        animation-name: flipYDimensionThingy;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+        animation-timing-function: ease-in-out;
+      }
+      #timerImage{
+        height: 20vh;
+        width: 20vh;
+      }
+      #time{
+        text-align: left;
+        position: fixed;
+        right: 10%;
+        top: 40.85%;
+        display: none;
+        font-family: Yee;
+        font-size: 13vh;
+      }
+      .chessTime{
+        margin-left: auto;
+        padding-right: 4.5vw;
+      }
+      #x{
+        width: 6vh;
+        height: 6vh;
+        position: absolute;
+        right: 10vh;
+        top: 10vh;
+      }
+      #x:hover{
+        animation-name: bigify2;
+        animation-duration: 0.3s;
+        animation-timing-function: ease;
+        transform: scale(1.1, 1.1);
+      }
+      #x:not(:hover){
+        animation-name: unbigify2;
+        animation-duration: 0.3s;
+        animation-timing-function: ease;
+      }
+      #cover{
+        position: absolute;
+        opacity: 0;
+        background-color: white;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        left: 0px;
+        top: 0px;
+      }
+      </style>
+    </head>
+    <body id="body">
+      <a href = "javascript:unstart();"><img title="Back" src="Assets/BackButton.svg" id="BackButton" /></a>
+      <a href = "javascript:replay();"><img title="Replay" src="Assets/ReplayButton.svg" id="ReplayButton"></a>
+      <canvas id="mainCanvas"></canvas>
+      <div id="playButton"><a href="javascript:start();"><img src="Assets/PlayButtonBetter.svg" alt="Play" id="actualPlayButton"></img></a></div>
+      <div id="scoreboard" hidden="true">
+        <h1 style="text-align:center;margin-top:6.5vh">SCORES</h1>
+        <div class="flexBox"><div id="score0" class="colorName">Red: <span class="score">0</span></div><div class="chessTime"></div></div>
+        <div class="flexBox"><div id="score1" class="colorName">Blue: <span class="score">0</span></div><div class="chessTime"></div></div>
+        <div class="flexBox"><div id="score2" class="colorName">Yellow: <span class="score">0</span></div><div class="chessTime"></div></div>
+        <div class="flexBox"><div id="score3" class="colorName">Green: <span class="score">0</span></div><div class="chessTime"></div></div>
+        <div class="flexBox"><div id="score4" class="colorName">Purple: <span class="score">0</span></div><div class="chessTime"></div></div>
+        <div class="flexBox"><div id="score5" class="colorName">Cyan: <span class="score">0</span></div><div class="chessTime"></div></div>
+        <div class="flexBox"><div id="score6" class="colorName">Unfilled: <span class="score">0</span></div><div class="chessTime"></div></div>
+      </div>
+        <a href="javascript:openOptions();"><img id="optionsButton" src="Assets/OptionsButton.svg"></img></a>
+      <div id="optionsScreen">
+        <h1>Options:</h1>
+        <div id="optionsScreenContent">
+          <h2>
+            <div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:turnTimerBox()" id="turnTimerCheckBox"></input> &nbsp; Turn timer &nbsp;<div id="turnTimerBox"><input id="actualTurnTimerBox" type="text" value="15">&nbsp;s</input></div></div>
+          </h2>
+          <h2>
+            <div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:chessTimerBox()" id="chessTimerCheckBox"></input> &nbsp; Chess timer &nbsp;<div id="chessTimerBox"><input id="actualChessTimerBox" type="text" value="3">&nbsp;m</input></div></div>
+          </h2>
+          <a  href="javascript:openOptions();"><img id = "x" src="Assets/x.svg"></img></a>
+        </div>
+      </div>
+      <div id="winScreen">
+
+      </div>
+      <script src = "hexaGameScript.js">
+      </script>
+      <div id="timerContainer"><div id = "timer"><div id="timerAgainYee"><img id="timerImage" src="Assets/Hourglass2.svg"></img></div></div></div>
+      <div id="time"></div>
+      <div id="cover"></div>
+    </body>
+    </html>
+    `;
+}
+
+function startOverAll(){
+  makeThePage();
+
+  document.body.style.backgroundColor = "white"
+
+  scale = 2;
+  if(localStorage.mobile == undefined) localStorage.mobile = "false";
+  c = document.getElementById("mainCanvas");
+  c.height = window.innerHeight;
+  if(localStorage.mobile == "false") c.height *= scale;
+  document.body.style.zoom = 1 / scale;
+  if(localStorage.mobile == "true") document.body.style.zoom = 1;
+  c.width = c.height;
+  s = c.width;
+  realTime = 0;
+  hexSize = 3;
+  makeTimerHappen;
+  importantNumber = 1.95;//1.95
+  turn = 0;
+  players = 2;
+  changed = false;
+  bgColors = [0, 0, 0];
+  started = false;
+  flipping = false;
+  ctx = c.getContext("2d");
+  ctx.lineWidth = 10;
+  logo = new Image;
+  undoButton = new Image;
+  undoButton.src = "Assets/UndoButton.svg";
+  replayButton = new Image;
+  replayButton.src = "Assets/ReplayButton.svg";
+  backButton = new Image
+  backButton.src = "Assets/BackButton.svg";
+  playButton = new Image;
+  playButton.src = "Assets/PlayButton.svg";
+  logo.src = "hexalogo.svg";
+  numbers = [new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image];
+  oldMoves = [];
+  turnNumber = 0;
+  upArrow = new Image;
+  downArrow = new Image;
+  upArrow.src = "Assets/UpArrow.svg";
+  downArrow.src = "Assets/DownArrow.svg";
+  for(var i = 0; i < numbers.length; i++){
+    numbers[i].src = "Assets/" + i + ".svg";
+  }
+  logo.onload = function(){ctx.drawImage(logo, 0, -s * (1/6), s, s);};
+  ctx.textAlign = "center";
+  ctx.font = s / 25 + "px Yeee";
+  ctx.fillText("", 0, 0);
+  document.fonts.onloadingdone = function () {
+    ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+  }
+  //playButton.onload = function(){ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);};
+  downArrow.onload = function(){ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);};
+  upArrow.onload = function(){ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);};
+  numbers[2].onload = function(){ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);};
+  hexagons = [];
+  hexImgs = [new Image, new Image, new Image, new Image, new Image, new Image, new Image, new Image];
+  hexImgs[0].src = "greyhex.svg";
+  hexImgs[1].src = "Assets/RedHex.svg";
+  hexImgs[2].src = "Assets/BlueHex.svg";
+  hexImgs[3].src = "darkgreyhex.svg";
+  hexImgs[4].src = "Assets/YellowHex.svg";
+  hexImgs[5].src = "Assets/GreenHex.svg";
+  hexImgs[6].src = "Assets/PurpleHex.svg";
+  hexImgs[7].src = "Assets/LightBlueHex.svg";
+  for(var i = 0; i < 91; i++){
+    hexagons[i] = [[0, 0], [0, 0], 0, [-1, -1, -1, -1, -1, -1], 0];
+  }
+  makeHexagons();
+
+  hexagons[60][2] = 3;
+  hexagons[57][2] = 3;
+  hexagons[24][2] = 3;
+  hexagons[27][2] = 3;
+  hexagons[30][2] = 3;
+  hexagons[63][2] = 3;
+  hexagons[84][2] = 3;
+  hexagons[60][4] = 3;
+  hexagons[57][4] = 3;
+  hexagons[24][4] = 3;
+  hexagons[27][4] = 3;
+  hexagons[30][4] = 3;
+  hexagons[63][4] = 3;
+  hexagons[84][4] = 3;
+
+  time = 0;
+
+  optionsOpen = false;
+
+  turnTimerBoxChecked = false;
+
+  chessTimerBoxChecked = false;
+
+  chessTimes = [0, 0, 0, 0, 0, 0];
+
+  onmousedown = function(e){
+    if(!optionsOpen){
+      var x = (e.clientX * scale);
+      x -= ((window.innerWidth - (s / scale)) * (scale / 2));
+      var y = e.clientY * scale;
+      if(e.which == 1){
+        if(started && !flipping) update(x, y);
+        if(!started){
+          //if(Math.hypot(y - s * (3/4), x -  s * (1/4)) < s / 12) start();
+          if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
+            players++;
+            if(players > 6) players = 2;
+            ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+            ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+            ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+            ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+            ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+          }
+          if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
+            players--;
+            if(players < 2) players = 6;
+            ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+            ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+            ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+            ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+            ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+          }
+        }
+      }
+    }
+  }
+  onmousemove = function(e){
+    var x = (e.clientX * scale);
+    x -= ((window.innerWidth - (s / scale)) * (scale / 2));
+    var y = e.clientY * scale;
+    if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50 && !started){
+      //console.log("yeet");
+      ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+      ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+      ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+      ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+      ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+    }
+    if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50 && !started){
+      //console.log("Yee");
+      ctx.clearRect(s * (2 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5 + (s / 2), s / 5);
+      ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+      ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+      ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+      ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+    }
+  }
+  ontouchstart = function(e){
+    if(started) update(e.touches[0].clientX - ((window.innerWidth-s) / 2), e.touches[0].clientY);
+    if(!started){
+      var x = e.touches[0].clientX - ((window.innerWidth-s) / 2);
+      var y = e.touches[0].clientY;
+      if(Math.hypot(y - s * (3/4), x -  s * (1/4)) < s / 12) start();
+      if(Math.hypot(y - (s * (3/4) - (s / 12)), x - (s * (3 / 4))) < s / 50){
+        players++;
+        if(players > 6) players = 2;
+        ctx.clearRect(s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+        ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+        ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+        ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+        ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+      }
+      if(Math.hypot(y - (s * (3/4) + (s / 12)), x - (s * (3 / 4))) < s / 50){
+        players--;
+        if(players < 2) players = 6;
+        ctx.clearRect(s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+        ctx.drawImage(numbers[players], s * (3 / 4) - (s / 10), s * (3/4) - ((s / 5) / 2), s / 5, s / 5);
+        ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);
+        ctx.drawImage(upArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) - (s / 12), s / 4, s / 4);
+        ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+      }
+    }
+    localStorage.mobile = "true";
+  }
+}
+
+function unstart(){
+  onmousedown = ()=>{};
+  ontouchstart = ()=>{};
+  onmousemove = ()=>{};
+  var opacity = 0;
+  var multiplier = 2;
+  var loopyThingy = setInterval(function(){
+    if(opacity >= 0) opacity += 0.02 * multiplier;
+    if(opacity > 1){
+      opacity = 1;
+      multiplier = -1;
+      startOverAll();
+    }
+    if(opacity < 0){
+      opacity = 0;
+    }
+    document.getElementById("cover").style.opacity = opacity;
+
+    if(opacity == 0){
+      clearInterval(loopyThingy);
+    }
+  }, 1000/60);
 }
