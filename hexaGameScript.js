@@ -22,7 +22,7 @@ var changed = false;
 var bgColors = [0, 0, 0];
 var started = false;
 var flipping = false;
-var animationsDisabled = true;
+var animationsDisabled = false;
 var ctx = c.getContext("2d");
 ctx.lineWidth = 10;
 var logo = new Image;
@@ -1373,6 +1373,9 @@ function makeThePage(){
           </h2>
           <h2>
             <div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:chessTimerBox()" id="chessTimerCheckBox"></input> &nbsp; Chess timer &nbsp;<div id="chessTimerBox"><input id="actualChessTimerBox" type="text" value="3">&nbsp;m</input></div></div>
+          </h2>
+          <h2>
+            <div class="flexBox"><input type="checkbox" onclick="javascript:animationsDisabled = !animationsDisabled" id=""></input> &nbsp; Disable Animations &nbsp;</div>
           </h2>
           <a  href="javascript:openOptions();"><img id = "x" src="Assets/x.svg"></img></a>
         </div>
