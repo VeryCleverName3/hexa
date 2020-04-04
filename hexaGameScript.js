@@ -1,6 +1,8 @@
 // Variables & stuff
 makeThePage();
 
+var firstTimeLoading = false;
+
 var scale = 2;
 if(localStorage.mobile == undefined) localStorage.mobile = "false";
 var c = document.getElementById("mainCanvas");
@@ -20,6 +22,7 @@ var changed = false;
 var bgColors = [0, 0, 0];
 var started = false;
 var flipping = false;
+var animationsDisabled = true;
 var ctx = c.getContext("2d");
 ctx.lineWidth = 10;
 var logo = new Image;
@@ -47,7 +50,8 @@ ctx.textAlign = "center";
 ctx.font = s / 25 + "px Yeee";
 ctx.fillText("", 0, 0);
 document.fonts.onloadingdone = function () {
-  ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+  if(!firstTimeLoading)ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+  firstTimeLoading = true;
 }
 //playButton.onload = function(){ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);};
 downArrow.onload = function(){ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);};
@@ -377,6 +381,7 @@ function start(){
       bgColors = [255, 255, 255];
       bgColorFadeTo(255, 0, 0);
       clearInterval(startingSequence);
+      //ctx.clearRect(0, 0, s, s);
     }
   }, 1000/60);
 }
@@ -492,7 +497,8 @@ function makeHexagons(){
 function drawHexagons(){
   var shrinkSize = 0;
   var speed = 0.1;
-  if(localStorage.mobile == "true"){
+  if(localStorage.mobile == "true" || animationsDisabled){
+
     ctx.clearRect(0, 0, s, s);
     for(var i = 0; i < 91; i++){
       ctx.drawImage(hexImgs[hexagons[i][2]], hexagons[i][0][0]-(hexSize*s/13/2), hexagons[i][0][1]-(hexSize*s/13/2), hexSize*s/13, hexSize*s/13);
@@ -520,10 +526,10 @@ function flip(hex, nState){
   if(flipping){
     setTimeout(function(){flip(hex, nState)}, 500);
   } else {
-    if(localStorage.mobile == "false") flipping = true;
+    if(localStorage.mobile == "false" || animationsDisabled) flipping = true;
     var shrinkSize = 1;
     var speed = -0.2;
-    if(localStorage.mobile == "true"){
+    if(localStorage.mobile == "true" || animationsDisabled){
       drawHexagons();
       flipping = false;
     } else {
@@ -1437,7 +1443,8 @@ function startOverAll(){
   ctx.font = s / 25 + "px Yeee";
   ctx.fillText("", 0, 0);
   document.fonts.onloadingdone = function () {
-    ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+    if(!firstTimeLoading)ctx.fillText("# of players:", s * (4.6 / 8), s * (3.0675 / 4));
+    firstTimeLoading = true;
   }
   //playButton.onload = function(){ctx.drawImage(playButton, s * (1/4) - ((s / 2) / 2), s * (3/4) - ((s / 2) / 2), s / 2, s / 2);};
   downArrow.onload = function(){ctx.drawImage(downArrow, s * (3 / 4) - (s / 8), s * (3/4) - ((s / 4) / 2) + (s / 12), s / 4, s / 4);};
