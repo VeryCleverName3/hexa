@@ -254,14 +254,23 @@ function  update(mX, mY){
             }
           }
       } while (changed);
+      document.getElementsByClassName("chessTime")[turn].style.color = "black";
       turn++;
-      while(chessTimerBoxChecked && !(chessTimes[turn] > 0)){
+      var numTimesLooped = 0;
+      if(turn >= players ) turn = 0;
+      while(chessTimerBoxChecked && !(chessTimes[turn] > 0.5)){
+        //if(turn >= players ) turn = 0;
         turn++;
         if(turn >= players) turn = 0;
+        console.log(players)
+        numTimesLooped++;
+        if(numTimesLooped > 6){
+          location.reload()
+        }
       }
       time = 0;
       startTimerThingy();
-      if(turn >= players) turn = 0;
+      //if(turn >= players) turn = 0;
       switch(turn){
         case 0:
           bgColorFadeTo(255, 0, 0);
@@ -814,6 +823,15 @@ function startTimerThingy(){
   makeTimerHappen = setInterval(function(){
     realTime += 0.1;
     time = Math.floor(realTime);
+    if(getTurnMaxTime() - time <= 5){
+      if(realTime % 1 >= 0.5){
+        setTimerColor("rgba(0, 0, 0, 0)");
+      } else {
+        setTimerColor("red");
+      }
+    } else {
+      setTimerColor("black");
+    }
     //console.log(time);
     if(turnTimerBoxChecked) {
       if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
@@ -821,6 +839,7 @@ function startTimerThingy(){
       } else document.getElementById("time").innerHTML = getTurnMaxTime() - time;
     }
     if(time >= getTurnMaxTime() && getTurnMaxTime() != 0){
+      setTimerColor("black");
       time = 0;
       realTime = 0;
       if(document.getElementById("time").innerHTML = getTurnMaxTime() - time < 10){
@@ -852,7 +871,17 @@ function startTimerThingy(){
       if(chessTimes[turn] > 0){
         chessTimes[turn] -= 0.1;
       }
+      if(chessTimes[turn] <= 10){
+        if(chessTimes[turn] % 1 <= 0.5){
+          document.getElementsByClassName("chessTime")[turn].style.color = "red";
+          document.getElementsByClassName("chessTime")[turn].style.color = "rgba(0, 0, 0, 0)";
+        } else {
+          document.getElementsByClassName("chessTime")[turn].style.color = "rgba(0, 0, 0, 0)";
+          document.getElementsByClassName("chessTime")[turn].style.color = "red";
+        }
+      }
       if(chessTimes[turn] <= 0){
+        document.getElementsByClassName("chessTime")[turn].style.color = "black";
         chessTimes[turn] = "0:00";
         if(getPlayersLeft() == 1){
           for(var i = 0; i < players; i++){
@@ -1360,6 +1389,8 @@ function startOverAll(){
 
   document.body.style.backgroundColor = "white";
 
+  clearInterval(makeTimerHappen);
+
   scale = 2;
   if(localStorage.mobile == undefined) localStorage.mobile = "false";
   c = document.getElementById("mainCanvas");
@@ -1555,4 +1586,8 @@ function unstart(){
       clearInterval(loopyThingy);
     }
   }, 1000/60);
+}
+
+function setTimerColor(color){
+  document.getElementById("time").style.color = color;
 }
