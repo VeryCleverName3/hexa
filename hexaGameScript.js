@@ -532,6 +532,7 @@ function flip(hex, nState){
     if(localStorage.mobile == "true" || animationsDisabled){
       drawHexagons();
       flipping = false;
+      hexagons[hex][4] = nState;
     } else {
       var shrinkLoop = setInterval(function(){
         ctx.fillStyle = "white";
@@ -1375,7 +1376,7 @@ function makeThePage(){
             <div class="flexBox timeStuff"><input type="checkbox" onclick="javascript:chessTimerBox()" id="chessTimerCheckBox"></input> &nbsp; Chess timer &nbsp;<div id="chessTimerBox"><input id="actualChessTimerBox" type="text" value="3">&nbsp;m</input></div></div>
           </h2>
           <h2>
-            <div class="flexBox"><input type="checkbox" onclick="javascript:animationsDisabled = !animationsDisabled" id=""></input> &nbsp; Disable Animations &nbsp;</div>
+            <div class="flexBox"><input type="checkbox" onclick="javascript:animationsDisabled = !animationsDisabled; setTimeout(()=>{if(started) drawHexagons();}, 100);" id=""></input> &nbsp; Disable Animations &nbsp;</div>
           </h2>
           <a  href="javascript:openOptions();"><img id = "x" src="Assets/x.svg"></img></a>
         </div>
